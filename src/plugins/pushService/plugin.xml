@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Plugin configuration for the broadcast plugin.-->
+<plugin>
+	<!-- Main plugin class -->
+    <class>com.smit.openfire.plugin.PushServicePlugin</class>
+    <!-- Plugin meta-data -->
+    <name>PushService</name>
+    <description>push messages to users</description>
+    <author>SMiT</author>
+    <version>1.0.0</version>
+    <date>2/23/2011</date>
+    <url>http://www.smit.com.cn</url>
+    <minServerVersion>3.4.1</minServerVersion>
+    <databaseKey>pushservice</databaseKey>
+    <databaseVersion>1</databaseVersion>
+    
+		<!--
+    <adminconsole>	
+        <tab id="tab-smitService" name="国微定制服务"
+         	 url="pushService.jsp"
+         	 description="welcome">
+        </tab>
+    </adminconsole>
+    -->
+</plugin>
