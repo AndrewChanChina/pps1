@@ -89,10 +89,6 @@ public class RegisterPushIQHandler extends IQHandler{
 		XMPPPacketReader reader = new XMPPPacketReader();
 		//XmlPullParserFactory factory = null;
 		try {
-            //factory = XmlPullParserFactory.newInstance(MXParser.class.getName(), null);
-            //reader.setXPPFactory(factory);
-			//reader.parseDocument(packetXml);
-            //String host = reader.getXPPParser().getAttributeValue("", "to");
 			Element doc = reader.read(new StringReader(packetXml)).getRootElement();
 	        if (doc == null) {
 	            // No document found.
@@ -101,7 +97,6 @@ public class RegisterPushIQHandler extends IQHandler{
 
 			String tagName = doc.getName();
 			System.out.println(tagName);
-			//Iterator it = doc.attributeIterator();
 			List<Element> elements = doc.elements();
 			for(int i = 0; i<elements.size(); i++)
 			{
@@ -161,7 +156,6 @@ public class RegisterPushIQHandler extends IQHandler{
 			try
 			{
 				//INSERT INTO DATABASE
-				//retIDStr = IDRegistrationDBManipulator.insertID(pushServiceName, userName);
 				retIDStr = IDRegistrationDBManipulator.insertID(pushServiceName, userName, userAccount);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -172,29 +166,6 @@ public class RegisterPushIQHandler extends IQHandler{
 				//register success
 				openimsElement.addElement("status").addText("true");		//true or false; false indicates failure
 				openimsElement.addElement("pushID").addText(retIDStr);	//123456789 //return generated ID
-				//========================================================
-				
-				/*
-				//////////////////////////////////////////////////////////////////////
-				//Create this IQ JUST FOR TEST
-				IQ pushIQ = new IQ();
-				//pushIQ.setFrom("admin@smit/SMIT");
-				pushIQ.setTo("test@smit/SMIT");
-				Element childElementCopy1111 = pushIQ.getElement();
-				Namespace ns1111 = new Namespace("", "smit:iq:notification");
-				Element openimsElement1111 = childElementCopy1111.addElement("openims", ns1111.getURI());
-				openimsElement1111.addElement("pushID").addText("PENDINGINTENT");;
-				openimsElement1111.addElement("title").addText("update");
-				openimsElement1111.addElement("uri").addText("http://www.baidu.com");
-				openimsElement1111.addElement("message").addText("New data available");
-				openimsElement1111.addElement("ticker").addText("Hurry up!Please update");
-				OfflinePushStore.instance().addOfflinePush(pushIQ, "SERVICETYPE");
-				
-				SmitIQOnlineDeliverer.instance().deliverToOne(pushIQ);
-				return null;
-				
-				//////////////////////////////////////////////////////////////////////
-				 */
 			}
 			else
 			{
@@ -210,8 +181,6 @@ public class RegisterPushIQHandler extends IQHandler{
 			try
 			{
 				//DELETE FROM DATABASE
-				//id = IDRegistrationDBManipulator.queryID(pushServiceName, userName);
-				//isSuccess = IDRegistrationDBManipulator.deleteID(pushServiceName, userName);
 				id = IDRegistrationDBManipulator.queryID(pushServiceName, userAccount);
 				isSuccess = IDRegistrationDBManipulator.deleteID(pushServiceName, userAccount);
 			} catch (SQLException e) {

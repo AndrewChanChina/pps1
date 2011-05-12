@@ -1,6 +1,5 @@
 package com.smit.openfire.plugin;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -16,7 +15,6 @@ import org.xmpp.packet.IQ;
 
 import com.smit.openfire.plugin.offlinePushIQ.OfflinePushIQ;
 import com.smit.openfire.plugin.offlinePushIQ.OfflinePushStore;
-import com.smit.openfire.plugin.offlinePushIQ.SmitIQOnlineDeliverer;
 import com.smit.openfire.plugin.util.SmitStringUtil;
 
 public class PushNotificationUserIQHandler  extends IQHandler{
@@ -35,7 +33,7 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 	@Override
 	public IQHandlerInfo getInfo() {
 		// TODO Auto-generated method stub
-		System.out.println("PushNotificationIQHandler: IQHandlerInfo getInfo() ");
+		System.out.println("PushNotificationUserIQHandler: IQHandlerInfo getInfo() ");
 		return mInfo;
 	}
 
@@ -44,18 +42,18 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 		// TODO Auto-generated method stub
 		//========================================================
 		/*
-<iq id="78gAV-84" type="get" from="admin@smitnn/Smack">
-  <server xmlns="smit:iq:user:notification">
-    <type>notification</type>
-    <user>test@smit/SMIT</user>
-    <delayWhileIdle>false</delayWhileIdle>
-    <collapseKey>123456789</collapseKey>
-    <title>Click me</title>
-    <ticker>New Message!</ticker>
-    <uri>http://www.smit.com.cn</uri>
-    <message>Good</message>
-  </server>
-</iq>
+		<iq id="78gAV-84" type="get" from="admin@smitnn/Smack">
+		  <server xmlns="smit:iq:user:notification">
+		    <type>notification</type>
+		    <user>test@smit/SMIT</user>
+		    <delayWhileIdle>false</delayWhileIdle>
+		    <collapseKey>123456789</collapseKey>
+		    <title>Click me</title>
+		    <ticker>New Message!</ticker>
+		    <uri>http://www.smit.com.cn</uri>
+		    <message>Good</message>
+		  </server>
+		</iq>
 		*/
 		
 		// TODO Auto-generated method stub
@@ -122,7 +120,7 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 			}
 		}
 
-		if(delayWhileIdle.equals("true"))
+		if(delayWhileIdle.equals("false"))//false
 		{
 			OfflinePushStore instance = OfflinePushStore.instance();
 			OfflinePushIQ iqIsExsit = instance.queryPushIQ(collapseKey);

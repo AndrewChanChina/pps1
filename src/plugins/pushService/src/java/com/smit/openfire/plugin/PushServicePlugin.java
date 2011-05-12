@@ -97,6 +97,8 @@ public class PushServicePlugin implements Plugin,
         mServer.getIQRouter().addHandler(new RegisterPushIQHandler());
         mServer.getIQRouter().addHandler(new PushNotificationDevIQHandler());
         mServer.getIQRouter().addHandler(new PushNotificationUserIQHandler());
+        mServer.getIQRouter().addHandler(new QueyPushIdIQHandler());
+        mServer.getIQRouter().addHandler(new QueryUserAccountResourceIQHandler()); 
 	}
 	
     public void destroyPlugin()

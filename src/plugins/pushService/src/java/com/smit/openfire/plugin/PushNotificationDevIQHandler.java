@@ -26,20 +26,19 @@ import com.smit.openfire.plugin.util.SmitStringUtil;
 public class PushNotificationDevIQHandler  extends IQHandler{
 	private static final String MODULE_NAME = "SmitPushNotificationDevIQHandler";
 	private static final String NAME_SPACE = "smit:iq:dev:notification";
-	//private static final String NAME_SPACE = "jabber:iq:register";
 	private IQHandlerInfo mInfo = null;
 
 	public PushNotificationDevIQHandler()
 	{
 		super(MODULE_NAME);
 		System.out.println("RegisterPushIQHandler: CONSTRUTOR");
-		mInfo = new IQHandlerInfo("AssHole2", NAME_SPACE);
+		mInfo = new IQHandlerInfo("SmitPushNotificationDev", NAME_SPACE);
 	}
 
 	@Override
 	public IQHandlerInfo getInfo() {
 		// TODO Auto-generated method stub
-		System.out.println("PushNotificationIQHandler: IQHandlerInfo getInfo() ");
+		System.out.println("PushNotificationDevIQHandler: IQHandlerInfo getInfo() ");
 		return mInfo;
 	}
 
@@ -109,13 +108,13 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 				continue;
 			}
 			
-			try {
+			//judge if the user registered this kind of push service.
+			try{
 				pushId = IDRegistrationDBManipulator.queryID(pushServiceName, sessionAddr);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 			if(pushId != null && pushId != "")
 			{
 				IQSendToUser.setTo(sessionAddr);
@@ -138,7 +137,7 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 				//We delete the previous one first
 				instance.deletePushIQ(collapseKey);
 			}
-				instance.addOfflinePush(packet, collapseKey );
+			instance.addOfflinePush(packet, collapseKey );
 		}
 	
 		return null;
