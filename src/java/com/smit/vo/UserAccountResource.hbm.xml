@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping>
+
+<class name="com.smit.vo.UserAccountResource" table="smitUserAccountResource">
+ <id name="id">
+ <generator class="native"></generator>
+ </id>
+ <property name="userAccount" column="userAccount"/>
+ <property name="resource" column="resource"/>
+ <property name="deviceName" column="deviceName"/>
+ <property name="deviceId" column="deviceId"/>
+</class>
+</hibernate-mapping>
