@@ -56,19 +56,6 @@ public class SmitIQOnlineDeliverer {
 			String sessionAddr = it.next().getAddress().toString();
 			if(iqTo.equalsIgnoreCase(sessionAddr))
 			{
-				/*
-				try
-				{
-					ComponentManager componentManager = ComponentManagerFactory.getComponentManager();
-					if(componentManager != null)
-					{
-						componentManager.sendPacket(PushServicePlugin.instance(), iq);
-					}
-				} catch (ComponentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
 				iq.setTo(iqTo);
 				mXMPPServer.getIQRouter().route(iq);
 				break;
@@ -88,29 +75,11 @@ public class SmitIQOnlineDeliverer {
 		for( ; it.hasNext();)
 		{
 			ClientSession clientSession = it.next();
-			//String iqTo = iq.getTo().toString();
 			String sessionAddr = clientSession.getAddress().toString();
 			iq.setTo(sessionAddr);
-			//iq.setFrom("admin@smit/SMIT");
-			
-			//if(iqTo.equalsIgnoreCase(sessionAddr))
-			//{
-				mXMPPServer.getIQRouter().route(iq);
-				//try
-				//{
-					//ComponentManager componentManager = ComponentManagerFactory.getComponentManager();
-					//if(componentManager != null)
-					//{
-						//componentManager.sendPacket(PushServicePlugin.instance(), iq);
-					//}
-				//}
-				//catch (ComponentException e)
-				//{
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				//}
-				break;
-			//}
+			mXMPPServer.getIQRouter().route(iq);
+			break;
+
 		}
 	}
 	

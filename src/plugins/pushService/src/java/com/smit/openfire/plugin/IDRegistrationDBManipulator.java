@@ -15,6 +15,10 @@ import org.jivesoftware.util.Log;
 import com.smit.database.DatabaseMan;
 import com.smit.vo.SmitRegisteredPushServiceId;
 
+/*
+ * CLASS: IDRegistrationDBManipulator
+ * DESCRITION: This class is used to manipulate the database "smitRegisteredPushServiceID"
+ */
 public class IDRegistrationDBManipulator {
 	
 	/*
@@ -31,7 +35,13 @@ public class IDRegistrationDBManipulator {
     {
     }
 
-    //return the inserted "ID" indicates success
+    /*
+     * 
+     * FUNCTION: insertID
+     * DESCRIPTION: generate an random push id, and insert the push id into database
+     * RETURN: return the inserted "ID" indicates success
+     */
+    //
     //return null indicates failure
     public static String insertID(final String pushServiceName,final String userName ,final String userAccount) throws SQLException 
     {

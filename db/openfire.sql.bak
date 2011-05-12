@@ -31,7 +31,7 @@ CREATE TABLE `smitOfflinePushIQ` (
 	`id` int(255) NOT NULL AUTO_INCREMENT,
   `collapseKey` varchar(20) NOT NULL,
   `IQText` varchar(1024) DEFAULT NULL,
-  `IQSize` smallint(8) DEFAULT NULL,
+  `IQSize` smallint(10) DEFAULT NULL,
   `creationDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;

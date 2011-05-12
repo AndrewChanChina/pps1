@@ -33,7 +33,6 @@ public class CustomSessionFactory {
 	
 	public static void closeSession()
 	{
-		//session.close();
 		Session s = (Session) threadLocal.get();
 		if (s != null) {
 			s.close();

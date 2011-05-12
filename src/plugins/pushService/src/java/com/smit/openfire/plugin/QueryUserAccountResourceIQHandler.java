@@ -1,6 +1,7 @@
 package com.smit.openfire.plugin;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -10,6 +11,7 @@ import org.jivesoftware.openfire.handler.IQHandler;
 import org.xmpp.packet.IQ;
 
 import com.smit.openfire.plugin.util.SmitStringUtil;
+import com.smit.vo.UserAccountResource;
 
 public class QueryUserAccountResourceIQHandler extends IQHandler{
 
@@ -41,25 +43,48 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		String userAccount = SmitStringUtil.TwoSubStringMid(packetStr, "<userAccount>", "</userAccount>");
 		String deviceName = SmitStringUtil.TwoSubStringMid(packetStr, "<deviceName>", "</deviceName>");
 		String deviceId = SmitStringUtil.TwoSubStringMid(packetStr, "<deviceId>", "</deviceId>");
-		
-		String resource = "";
-		try {
-			resource = UserAccountResourceDBManipulator.queryResource( userAccount, deviceName, deviceId);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String opCode = SmitStringUtil.TwoSubStringMid(packetStr, "<opCode>", "</opCode>");
+		String resource = SmitStringUtil.TwoSubStringMid(packetStr, "<resource>", "</resource>");
 		
 		IQ reply = IQ.createResultIQ(packet);
 		reply.setTo(packet.getFrom());
-		//reply.set
-		
 		Element childElementCopy = reply.getElement();
 		Namespace ns = new Namespace("", NAME_SPACE);
 		Element openimsElement = childElementCopy.addElement("openims", ns.getURI());
-		openimsElement.addElement("resource").addText(resource);;
 		
+		if(opCode.equalsIgnoreCase("query"))
+		{
+			List<UserAccountResource> list = null;
+			try {
+				list = UserAccountResourceDBManipulator.queryResource( userAccount);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			for(int i=0; i<list.size(); i++)
+			{
+				UserAccountResource res = list.get(i);
+				openimsElement.addElement("resource").addText(res.getResource());
+				openimsElement.addElement("deviceName").addText(res.getDeviceName());
+				openimsElement.addElement("deviceId").addText(res.getDeviceId());
+			}
+		}
+		else if(opCode.equalsIgnoreCase("save"))
+		{
+			boolean isSuccess = false;
+			isSuccess = UserAccountResourceDBManipulator.insertResource(userAccount, resource, deviceName, deviceId);
+			if(isSuccess)
+			{
+				openimsElement.addElement("status").addText("success");
+			}
+			else
+			{
+				openimsElement.addElement("status").addText("fail");
+			}
+		}
 		return reply;
+
 	}
 	
 }

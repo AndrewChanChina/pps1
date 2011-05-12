@@ -129,7 +129,7 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 				//We do not insert the offline push IQ.
 				instance.deletePushIQ(collapseKey);
 			}
-			instance.addOfflinePush(packet, collapseKey);		
+			instance.addOfflinePush(packet, collapseKey);
 		}
 		
 		/*

@@ -16,7 +16,7 @@ public class UserAccountResourceDBManipulator {
     {
     }
 
-    public static void insertResource(final String userAccount,
+    public static boolean insertResource(final String userAccount,
     									final String resource ,
     									final String deviceName,
     									final String deviceId)
@@ -27,7 +27,8 @@ public class UserAccountResourceDBManipulator {
     	itemToSave.setResource(resource);
     	itemToSave.setDeviceName(deviceName);
     	itemToSave.setDeviceId(deviceId);
-    	DatabaseMan.saveOrUpdate(itemToSave);
+    	boolean ret = DatabaseMan.saveOrUpdate(itemToSave);
+    	return ret;
     }
 
     public static boolean deleteResource(final String userAccount, 
@@ -71,4 +72,13 @@ public class UserAccountResourceDBManipulator {
     	}
     	return retResource;
     }
+    
+	public static List<UserAccountResource> queryResource(final String userAccount) throws SQLException {
+		String retResource = "";
+		String selectSQL = "from smitUserAccountResource WHERE "
+				+ "userAccount = '" + userAccount + "'";
+		List<UserAccountResource> list = (List<UserAccountResource>) DatabaseMan
+				.select(selectSQL);
+		return list;
+	}
 }

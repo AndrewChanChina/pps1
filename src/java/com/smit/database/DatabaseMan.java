@@ -37,7 +37,7 @@ public class DatabaseMan {
 		return list;
 	}
 	
-	public static void saveOrUpdate(Object object)
+	public static boolean saveOrUpdate(Object object)
 	{
 		Transaction ts = null;
 		Session session = CustomSessionFactory.getSession();
@@ -55,11 +55,14 @@ public class DatabaseMan {
 			}
 			//e.printStackTrace();
 			System.err.println(e.getMessage());
+			CustomSessionFactory.closeSession();
+			return false;
 		}
 		finally
 		{
 			CustomSessionFactory.closeSession();
 		}
+		return true;
 	}
 	
 	public static Object get(Class cls, Serializable ser)

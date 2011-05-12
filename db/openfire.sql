@@ -9,7 +9,7 @@ CREATE TABLE `test` (
   `id` tinyint(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 /*Data for the table `content` */
 insert  into `test`(`id`,`title`) values (1,'test table title');
