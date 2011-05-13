@@ -7,7 +7,7 @@ import java.util.Random;
 
 import com.smit.database.DatabaseMan;
 import com.smit.vo.SmitRegisteredPushServiceId;
-import com.smit.vo.UserAccountResource;
+import com.smit.vo.SmitUserAccountResource;
 
 public class UserAccountResourceDBManipulator {
 
@@ -21,7 +21,7 @@ public class UserAccountResourceDBManipulator {
     									final String deviceName,
     									final String deviceId)
     {
-    	UserAccountResource itemToSave = new UserAccountResource();
+    	SmitUserAccountResource itemToSave = new SmitUserAccountResource();
     	itemToSave.setId(null);
     	itemToSave.setUserAccount(userAccount);
     	itemToSave.setResource(resource);
@@ -35,11 +35,11 @@ public class UserAccountResourceDBManipulator {
 									     final String deviceName, 
 									     final String deviceId) throws SQLException 
     {
-    	String selectSQL = "from smitUserAccountResource WHERE " + 
+    	String selectSQL = "from SmitUserAccountResource WHERE " + 
 							"userAccount = '" + userAccount + "' AND " +
 							"deviceName = '" + deviceName + "' AND " +
 							"deviceId = '" + deviceId + "'";
-    	List<UserAccountResource> list= (List<UserAccountResource>)DatabaseMan.select(selectSQL);
+    	List<SmitUserAccountResource> list= (List<SmitUserAccountResource>)DatabaseMan.select(selectSQL);
     	if(list == null || list.size() <= 0)
     	{
     		return false;
@@ -57,11 +57,11 @@ public class UserAccountResourceDBManipulator {
     									throws SQLException 
     {
     	String retResource = "";
-    	String selectSQL = "from smitUserAccountResource WHERE " + 
+    	String selectSQL = "from SmitUserAccountResource WHERE " + 
     						"userAccount = '" + userAccount + "' AND " +
     						"deviceName = '" + deviceName + "' AND " +
     						"deviceId = '" + deviceId + "'";
-    	List<UserAccountResource> list= (List<UserAccountResource>)DatabaseMan.select(selectSQL);
+    	List<SmitUserAccountResource> list= (List<SmitUserAccountResource>)DatabaseMan.select(selectSQL);
     	if(list == null || list.size() <= 0)
     	{
     		return retResource;
@@ -73,11 +73,11 @@ public class UserAccountResourceDBManipulator {
     	return retResource;
     }
     
-	public static List<UserAccountResource> queryResource(final String userAccount) throws SQLException {
+	public static List<SmitUserAccountResource> queryResource(final String userAccount) throws SQLException {
 		String retResource = "";
-		String selectSQL = "from smitUserAccountResource WHERE "
+		String selectSQL = "from SmitUserAccountResource WHERE "
 				+ "userAccount = '" + userAccount + "'";
-		List<UserAccountResource> list = (List<UserAccountResource>) DatabaseMan
+		List<SmitUserAccountResource> list = (List<SmitUserAccountResource>) DatabaseMan
 				.select(selectSQL);
 		return list;
 	}

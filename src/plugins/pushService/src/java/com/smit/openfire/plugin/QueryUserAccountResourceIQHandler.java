@@ -11,7 +11,7 @@ import org.jivesoftware.openfire.handler.IQHandler;
 import org.xmpp.packet.IQ;
 
 import com.smit.openfire.plugin.util.SmitStringUtil;
-import com.smit.vo.UserAccountResource;
+import com.smit.vo.SmitUserAccountResource;
 
 public class QueryUserAccountResourceIQHandler extends IQHandler{
 
@@ -22,7 +22,7 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 	public QueryUserAccountResourceIQHandler() {
 		super(MODULE_NAME);
 		// TODO Auto-generated constructor stub
-		System.out.println("RegisterPushIQHandler: CONSTRUTOR");
+		System.out.println("SmitQueryUserAccountResourceIQHandler: CONSTRUTOR");
 		mInfo = new IQHandlerInfo("QueryUserAccountResource", NAME_SPACE);
 	}
 	
@@ -56,7 +56,7 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		
 		if(opCode.equalsIgnoreCase("query"))
 		{
-			List<UserAccountResource> list = null;
+			List<SmitUserAccountResource> list = null;
 			try {
 				list = UserAccountResourceDBManipulator.queryResource( userAccount);
 			} catch (SQLException e) {
@@ -72,7 +72,7 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 				openimsElement.addElement("status").addText("success");
 				for(int i=0; i<list.size(); i++)
 				{
-					UserAccountResource res = list.get(i);
+					SmitUserAccountResource res = list.get(i);
 					openimsElement.addElement("resource").addText(res.getResource());
 					openimsElement.addElement("deviceName").addText(res.getDeviceName());
 					openimsElement.addElement("deviceId").addText(res.getDeviceId());

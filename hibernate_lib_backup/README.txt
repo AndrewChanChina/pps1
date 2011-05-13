@@ -1,0 +1,1 @@
+build\lib也中有一份，此文件夹的是用于防止被project->clean

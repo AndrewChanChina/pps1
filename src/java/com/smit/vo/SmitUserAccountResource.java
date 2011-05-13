@@ -1,7 +1,7 @@
 package com.smit.vo;
 import java.io.Serializable;
 
-public class UserAccountResource implements Serializable {
+public class SmitUserAccountResource implements Serializable {
 	private Integer id;
 	private String userAccount;
 	private String resource;
