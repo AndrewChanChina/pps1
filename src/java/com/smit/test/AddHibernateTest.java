@@ -21,8 +21,6 @@ public class AddHibernateTest {
 		test.setTitle("3 title");
 		DatabaseMan.saveOrUpdate(test);
 		
-		
-		
 		List<Test> testList = (List<Test>)DatabaseMan.select("from Test");
 		for(int i=0; i<testList.size(); i++)
 		{

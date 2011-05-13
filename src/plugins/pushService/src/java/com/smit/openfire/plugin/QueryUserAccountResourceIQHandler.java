@@ -51,6 +51,8 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		Element childElementCopy = reply.getElement();
 		Namespace ns = new Namespace("", NAME_SPACE);
 		Element openimsElement = childElementCopy.addElement("openims", ns.getURI());
+		openimsElement.addElement("userAccount").addText(userAccount);
+		openimsElement.addElement("opCode").addText(opCode);
 		
 		if(opCode.equalsIgnoreCase("query"))
 		{
@@ -61,13 +63,20 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			for(int i=0; i<list.size(); i++)
+			if(list == null)
 			{
-				UserAccountResource res = list.get(i);
-				openimsElement.addElement("resource").addText(res.getResource());
-				openimsElement.addElement("deviceName").addText(res.getDeviceName());
-				openimsElement.addElement("deviceId").addText(res.getDeviceId());
+				openimsElement.addElement("status").addText("fail");
+			}
+			else
+			{
+				openimsElement.addElement("status").addText("success");
+				for(int i=0; i<list.size(); i++)
+				{
+					UserAccountResource res = list.get(i);
+					openimsElement.addElement("resource").addText(res.getResource());
+					openimsElement.addElement("deviceName").addText(res.getDeviceName());
+					openimsElement.addElement("deviceId").addText(res.getDeviceId());
+				}
 			}
 		}
 		else if(opCode.equalsIgnoreCase("save"))

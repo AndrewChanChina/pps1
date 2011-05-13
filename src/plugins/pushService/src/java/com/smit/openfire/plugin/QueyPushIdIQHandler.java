@@ -1,6 +1,7 @@
 package com.smit.openfire.plugin;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -10,6 +11,7 @@ import org.jivesoftware.openfire.handler.IQHandler;
 import org.xmpp.packet.IQ;
 
 import com.smit.openfire.plugin.util.SmitStringUtil;
+import com.smit.vo.SmitRegisteredPushServiceId;
 
 public class QueyPushIdIQHandler extends IQHandler{
 	
@@ -40,23 +42,37 @@ public class QueyPushIdIQHandler extends IQHandler{
 		String pushServiceName = SmitStringUtil.TwoSubStringMid(packetStr, "<pushServiceName>", "</pushServiceName>");
 		String userAccount = SmitStringUtil.TwoSubStringMid(packetStr, "<userAccount>", "</userAccount>");
 		
-		String pushId = "";
+		//String pushId = "";
+		List<SmitRegisteredPushServiceId> list = null;
 		try {
-			pushId = IDRegistrationDBManipulator.queryID(pushServiceName, userAccount);
+			//pushId = IDRegistrationDBManipulator.queryID(pushServiceName, userAccount);
+			list = IDRegistrationDBManipulator.queryID(pushServiceName);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		IQ reply = IQ.createResultIQ(packet);
 		reply.setTo(packet.getFrom());
-		//reply.set
-		
 		Element childElementCopy = reply.getElement();
 		Namespace ns = new Namespace("", NAME_SPACE);
 		Element openimsElement = childElementCopy.addElement("openims", ns.getURI());
-		openimsElement.addElement("pushID").addText(pushId);;
-		
+		if(list == null)
+		{
+			openimsElement.addElement("status").addText("fail");
+			openimsElement.addElement("pushServiceName").addText(pushServiceName);
+			openimsElement.addElement("userAccount").addText(userAccount);
+		}
+		else
+		{
+			openimsElement.addElement("status").addText("success");
+			openimsElement.addElement("pushServiceName").addText(pushServiceName);
+			openimsElement.addElement("userAccount").addText(userAccount);
+			for(int i=0; i<list.size(); i++)
+			{
+				openimsElement.addElement("pushID").addText(list.get(i).getPushServiceID());
+			}
+		}
 		return reply;
 	}
 }

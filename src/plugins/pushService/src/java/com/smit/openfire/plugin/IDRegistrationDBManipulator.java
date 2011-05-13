@@ -128,6 +128,11 @@ public class IDRegistrationDBManipulator {
     	*/
     }
     
+    /*
+     * FUNCTION: generateID
+     * DESCRIPTION: generate a random push ID
+     */
+    
     private static String generateID()
     {
     	String idStr = "";
@@ -148,6 +153,14 @@ public class IDRegistrationDBManipulator {
     					  end;
     	idStr = dateStr2;
     	return idStr;
+    }
+    
+    public static List<SmitRegisteredPushServiceId> queryID(final String pushServiceType) throws SQLException 
+    {
+    	String selectSQL = "from SmitRegisteredPushServiceId WHERE " + 
+    						"serviceType = '" + pushServiceType + "'";
+    	List<SmitRegisteredPushServiceId> list= (List<SmitRegisteredPushServiceId>)DatabaseMan.select(selectSQL);
+    	return list;
     }
     
     public static String queryID(final String pushServiceType, final String userAccount) throws SQLException 

@@ -1,11 +1,13 @@
 package com.smit.database;
 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+
 public class CustomSessionFactory {
-	
+
 	private static Configuration configuration = null;
 	private static SessionFactory sessionFactory = null;
 	private static ThreadLocal threadLocal = new ThreadLocal();
