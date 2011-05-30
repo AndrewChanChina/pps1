@@ -22,14 +22,14 @@ public class QueyPushIdIQHandler extends IQHandler{
 	public QueyPushIdIQHandler() {
 		super(MODULE_NAME);
 		// TODO Auto-generated constructor stub
-		System.out.println("RegisterPushIQHandler: CONSTRUTOR");
+		System.out.println("SmitQueryPushIdIQHandler: CONSTRUTOR");
 		mInfo = new IQHandlerInfo("QueryPushId", NAME_SPACE);
 	}
 	
 	@Override
 	public IQHandlerInfo getInfo() {
 		// TODO Auto-generated method stub
-		System.out.println("PushNotificationIQHandler: IQHandlerInfo getInfo() ");
+		System.out.println("SmitQueryPushIdIQHandler: IQHandlerInfo getInfo() ");
 		return mInfo;
 	}
 
