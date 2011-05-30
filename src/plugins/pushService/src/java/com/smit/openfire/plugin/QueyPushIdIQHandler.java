@@ -23,6 +23,7 @@ public class QueyPushIdIQHandler extends IQHandler{
 		super(MODULE_NAME);
 		// TODO Auto-generated constructor stub
 		System.out.println("RegisterPushIQHandler: CONSTRUTOR");
+		
 		mInfo = new IQHandlerInfo("QueryPushId", NAME_SPACE);
 	}
 	

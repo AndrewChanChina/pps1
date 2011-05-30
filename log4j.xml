@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"> 
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}[%p] %m %l%n"></param>
+		</layout>
+	</appender>
+	
+	<appender name="File" class="org.apache.log4j.RollingFileAppender">
+		<!-- 指定日志文件 -->
+		<param name="file" value="log/debug.log"></param>
+		<!-- 指定文件大小 -->
+		<param name="maxFileSize" value="8MB"></param>
+		<param name="append" value="true"></param>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}[%p]%m **** %l%n"></param>
+		</layout>
+	</appender>
+	<!--  
+	 <logger name="root">
+        <level value="DEBUG"/>
+        <appender-ref ref="Console"/>
+        <appender-ref ref="File"/>
+    </logger>
+    -->
+	<root>
+		<priority value="debug"/>
+		<appender-ref ref="Console"/>
+		<appender-ref ref="File"/>
+	</root>
+
+</log4j:configuration>
