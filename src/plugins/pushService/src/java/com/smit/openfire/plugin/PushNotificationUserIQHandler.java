@@ -15,6 +15,7 @@ import org.xmpp.packet.IQ;
 
 import com.smit.openfire.plugin.offlinePushIQ.OfflinePushIQ;
 import com.smit.openfire.plugin.offlinePushIQ.OfflinePushStore;
+import com.smit.openfire.plugin.offlinePushIQ.PushIQ;
 import com.smit.openfire.plugin.util.SmitStringUtil;
 
 public class PushNotificationUserIQHandler  extends IQHandler{
@@ -37,11 +38,12 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 		return mInfo;
 	}
 
-	@Override
-	public IQ handleIQ(IQ packet) throws UnauthorizedException {
-		// TODO Auto-generated method stub
-		//========================================================
-		/*
+	/**
+	 * 处理push过来的IQ的信息
+	 * 主要是对消息进行分发
+	 * @date 2011-5-17 13:32:04
+	 * @author ANDREW
+	 * 
 		<iq id="78gAV-84" type="get" from="admin@smitnn/Smack">
 		  <server xmlns="smit:iq:user:notification">
 		    <type>notification</type>
@@ -53,47 +55,58 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 		    <uri>http://www.smit.com.cn</uri>
 		    <message>Good</message>
 		  </server>
-		</iq>
-		*/
+		</iq>		
+	 */
+	@Override
+	public IQ handleIQ(IQ packet) throws UnauthorizedException {		
 		
-		// TODO Auto-generated method stub
-		System.out.println("PushNotificationIQHandler: IQ handleIQ(IQ packet)");
-
-		//parse the received IQ packet.
-		String packetStr = packet.toString();
-		String type = SmitStringUtil.TwoSubStringMid(packetStr, "<type>", "</type>");
-		String user = SmitStringUtil.TwoSubStringMid(packetStr, "<user>", "</user>");
-		String delayWhileIdle = SmitStringUtil.TwoSubStringMid(packetStr, "<delayWhileIdle>", "</delayWhileIdle>");
-		String collapseKey = SmitStringUtil.TwoSubStringMid(packetStr, "<collapseKey>", "</collapseKey>");
-		String title = SmitStringUtil.TwoSubStringMid(packetStr, "<title>", "</title>");
-		String ticker = SmitStringUtil.TwoSubStringMid(packetStr, "<ticker>", "</ticker>");
-		String uri = SmitStringUtil.TwoSubStringMid(packetStr, "<uri>", "</uri>");
-		String message = SmitStringUtil.TwoSubStringMid(packetStr, "<message>", "</message>");
+		PushIQ pushIQ = new PushIQ();
+		Element root = packet.getChildElement();
+		for (Iterator iter = root.elementIterator(); iter.hasNext(); ) {
+			Element element = (Element) iter.next();
+			String name = element.getName();
+			String text = element.getText();
+			if(name.endsWith("type")){
+				pushIQ.setIQType(text);
+			}
+			if(name.endsWith("user")){
+				pushIQ.getUsers().add(text);
+			}
+			if(name.endsWith("delayWhileIdle")){
+				pushIQ.setDelayWhileIdle(text);
+			}
+			if(name.endsWith("collapseKey")){
+				pushIQ.setCollapseKey(text);
+			}
+			if(name.endsWith("title")){
+				pushIQ.setTitle(text);
+			}
+			if(name.endsWith("ticker")){
+				pushIQ.setTicker(text);
+			}
+			if(name.endsWith("uri")){
+				pushIQ.setUri(text);
+			}
+			if(name.endsWith("message")){
+				pushIQ.setMessage(text);
+			}
+		}
 		
 		//Generate new IQ which will sent to user.
 		IQ IQSendToUser = new IQ();
-		IQSendToUser.setFrom("admin@smit/SMIT"); //iq111.setTo("a@smit/spark");
+		IQSendToUser.setFrom("admin@smit/SMIT");
 		IQSendToUser.setTo("test@smit/SMIT");
 		Element childElementCopy22 = IQSendToUser.getElement();
 		Namespace ns22 = new Namespace("", "smit:iq:notification");
 		Element openimsElement22 = childElementCopy22.addElement("openims", ns22.getURI());
-		//openimsElement22.addElement("pushID").addText(pushId);
-		openimsElement22.addElement("title").addText(title);
-		openimsElement22.addElement("uri").addText(uri);
-		openimsElement22.addElement("message").addText(message);
-		openimsElement22.addElement("ticker").addText(ticker);
+		openimsElement22.addElement("pushID").addText(pushIQ.getPushID());
+		openimsElement22.addElement("title").addText(pushIQ.getTitle());
+		openimsElement22.addElement("uri").addText(pushIQ.getUri());
+		openimsElement22.addElement("message").addText(pushIQ.getMessage());
+		openimsElement22.addElement("ticker").addText(pushIQ.getTicker());	
+
 		
-		String pushId = null;
-		if(type.equalsIgnoreCase("alert"))
-		{
-			pushId = "WARNING";
-		}
-		else if(type.equalsIgnoreCase("notification"))
-		{
-			pushId = "PENDINGINTENT";
-		}
-		openimsElement22.addElement("pushID").addText(pushId);
-		
+		// TODO 逻辑处理没完整，发给在线的人，不在线的要缓存
 		SessionManager sessionManager = SessionManager.getInstance();
 		Collection<ClientSession> sessions = sessionManager.getSessions();
 		Iterator<ClientSession> it = sessions.iterator();
@@ -108,10 +121,12 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 				continue;
 			}
 
-			if(pushId != null && pushId != "")
+			if(pushIQ.getPushID() != null && pushIQ.getPushID() != "")
 			{
-				IQSendToUser.setTo(sessionAddr);
-				xmppServer.getIQRouter().route(IQSendToUser);
+				if(pushIQ.getUsers().contains(sessionAddr)){
+					IQSendToUser.setTo(sessionAddr);
+					xmppServer.getIQRouter().route(IQSendToUser);
+				}
 			}
 			else
 			{
@@ -120,16 +135,16 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 			}
 		}
 
-		if(delayWhileIdle.equals("false"))//false
+		if(pushIQ.isDelayWhileIdle() == false)//false
 		{
 			OfflinePushStore instance = OfflinePushStore.instance();
-			OfflinePushIQ iqIsExsit = instance.queryPushIQ(collapseKey);
+			OfflinePushIQ iqIsExsit = instance.queryPushIQ(pushIQ.getCollapseKey());
 			if(iqIsExsit != null)
 			{
 				//We do not insert the offline push IQ.
-				instance.deletePushIQ(collapseKey);
+				instance.deletePushIQ(pushIQ.getCollapseKey());
 			}
-			instance.addOfflinePush(packet, collapseKey);
+			instance.addOfflinePush(packet, pushIQ.getCollapseKey());
 		}
 		
 		/*

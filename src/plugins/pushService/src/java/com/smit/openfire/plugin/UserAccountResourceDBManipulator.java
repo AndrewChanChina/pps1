@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import com.cenqua.shaj.log.Log;
 import com.smit.database.DatabaseMan;
 import com.smit.vo.SmitRegisteredPushServiceId;
 import com.smit.vo.SmitUserAccountResource;
@@ -16,13 +17,29 @@ public class UserAccountResourceDBManipulator {
     {
     }
 
+    /**
+     * 添加资源时，进行deviceID，互斥
+     * @date 2011-5-17 10:32:12
+     * @author ANDREW
+     */
     public static boolean insertResource(final String userAccount,
     									final String resource ,
     									final String deviceName,
     									final String deviceId)
-    {
+    {    
     	SmitUserAccountResource itemToSave = new SmitUserAccountResource();
-    	itemToSave.setId(null);
+    	// 为保证同一个设备ID，只有资源
+    	String selectSQL = "from SmitUserAccountResource WHERE " + 
+		"userAccount = '" + userAccount + "' AND " +
+		"deviceId = '" + deviceId + "'";
+    	List<SmitUserAccountResource> list= (List<SmitUserAccountResource>)DatabaseMan.select(selectSQL);
+    	if(list!=null){
+    		if(list.size()==1)
+    			itemToSave = list.get(0);
+    		if(list.size()>1){
+    			//TODO 异常啦
+    		}    			
+    	}   
     	itemToSave.setUserAccount(userAccount);
     	itemToSave.setResource(resource);
     	itemToSave.setDeviceName(deviceName);
