@@ -1,5 +1,6 @@
 package com.smit.openfire.plugin;
 
+import java.awt.List;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -94,8 +95,8 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 		
 		//Generate new IQ which will sent to user.
 		IQ IQSendToUser = new IQ();
-		IQSendToUser.setFrom("admin@smit/SMIT");
-		IQSendToUser.setTo("test@smit/SMIT");
+		IQSendToUser.setFrom(packet.getFrom().toString());
+		//IQSendToUser.setTo("test@smit/SMIT");
 		Element childElementCopy22 = IQSendToUser.getElement();
 		Namespace ns22 = new Namespace("", "smit:iq:notification");
 		Element openimsElement22 = childElementCopy22.addElement("openims", ns22.getURI());
@@ -104,9 +105,9 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 		openimsElement22.addElement("uri").addText(pushIQ.getUri());
 		openimsElement22.addElement("message").addText(pushIQ.getMessage());
 		openimsElement22.addElement("ticker").addText(pushIQ.getTicker());	
-
+		long timestamp = System.currentTimeMillis();
+		openimsElement22.addElement("time").addText(Long.toString(timestamp));
 		
-		// TODO 逻辑处理没完整，发给在线的人，不在线的要缓存
 		SessionManager sessionManager = SessionManager.getInstance();
 		Collection<ClientSession> sessions = sessionManager.getSessions();
 		Iterator<ClientSession> it = sessions.iterator();
@@ -123,10 +124,25 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 
 			if(pushIQ.getPushID() != null && pushIQ.getPushID() != "")
 			{
-				if(pushIQ.getUsers().contains(sessionAddr)){
+				/*
+				java.util.List<String> users = pushIQ.getUsers();
+				for(int ti = 0; ti < users.size(); ti++)
+				{
+					String str = users.get(ti);
+					if(str.equals(sessionAddr))
+					{
+						IQSendToUser.setTo(sessionAddr);
+						xmppServer.getIQRouter().route(IQSendToUser);
+					}
+				}
+				*/
+				
+				if(pushIQ.getUsers().contains((Object)sessionAddr)){
 					IQSendToUser.setTo(sessionAddr);
 					xmppServer.getIQRouter().route(IQSendToUser);
 				}
+				
+
 			}
 			else
 			{
@@ -135,7 +151,7 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 			}
 		}
 
-		if(pushIQ.isDelayWhileIdle() == false)//false
+		if(pushIQ.isDelayWhileIdle() == true)
 		{
 			OfflinePushStore instance = OfflinePushStore.instance();
 			OfflinePushIQ iqIsExsit = instance.queryPushIQ(pushIQ.getCollapseKey());

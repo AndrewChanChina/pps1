@@ -11,6 +11,8 @@ import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,8 +125,10 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 		offlinePushIQ.setCollapseKey(collapseKey);
 		offlinePushIQ.setIQText(pushIQ.toString());
 		offlinePushIQ.setIQSize(pushIQ.toString().length());
+		
 		Date dateTime = new java.util.Date();
-		//String date = Long.toString(dateTime.getTime());
+				////String date = Long.toString(dateTime.getTime());
+		//long dateTime = System.currentTimeMillis();
 		offlinePushIQ.setCreationDate(dateTime);
 		DatabaseMan.saveOrUpdate(offlinePushIQ);
 	}
@@ -143,11 +147,15 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 			pstmt = con.prepareStatement(SELECT_ALL_PUSH_IQ);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				String collapseKey = rs.getString(1);
-				String queryIQText = rs.getString(2);
-				int queryIQSize = rs.getInt(3);
-				String queryCreationDate = rs.getString(4);
-				Date creationDate = new Date(Long.parseLong(queryCreationDate.trim()));
+				String collapseKey = rs.getString(2);
+				String queryIQText = rs.getString(3);
+				int queryIQSize = rs.getInt(4);
+				String queryCreationDate = rs.getString(5);
+				//Date creationDate = new Date(Long.parseLong(queryCreationDate.trim()));
+				
+				DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+				Date creationDate = fmt.parse(queryCreationDate);
+				
 				Element element = xmlReader.read(new StringReader(queryIQText))
 						.getRootElement();
 				offlinePushIQ = new OfflinePushIQ(creationDate, element);

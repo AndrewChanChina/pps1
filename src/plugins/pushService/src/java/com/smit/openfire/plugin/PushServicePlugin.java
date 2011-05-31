@@ -261,28 +261,32 @@ public class PushServicePlugin implements Plugin,
 	@Override
 	public void anonymousSessionCreated(Session session) {
 		// TODO Auto-generated method stub
-		
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + " anonymous SESSION CREATED ===============");
 	}
 
 	@Override
 	public void anonymousSessionDestroyed(Session session) {
 		// TODO Auto-generated method stub
 		
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + " anonymous SESSION DESTROYED ===============");
 	}
 
 	@Override
 	public void resourceBound(Session session) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void sessionCreated(Session session) {
-		// TODO Auto-generated method stub
-		//We will query the offline push IQ from the database...
-		System.out.println("======We will query the offline push IQ from the database===");
 		JID address = session.getAddress();
 		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + "  RESOURCE BOUND ===============");
+		
+		if(3 != session.getStatus()) //if != STATUS_AUTHENTICATED
+		{
+			return;
+		}
         UserManager userManager = UserManager.getInstance();
         User user = null;
 		try {
@@ -294,14 +298,27 @@ public class PushServicePlugin implements Plugin,
 		if(user != null)
 		{
 			long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
-			OfflinePushIQPusher.instance().pushPushIQ(user, lastOfflineDate);
+			OfflinePushIQPusher.instance().pushPushIQ(userAccount, lastOfflineDate);
 		}
+		
+	}
+
+	@Override
+	public void sessionCreated(Session session) {
+		// TODO Auto-generated method stub
+		//We will query the offline push IQ from the database...
+		
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + "  SESSION CREATED ===============");
 	}
 
 	@Override
 	public void sessionDestroyed(Session session) {
 		// TODO Auto-generated method stub
-		
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + "  RSESSION DESTROYED ===============");
 	}
 }
 

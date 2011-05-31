@@ -1,7 +1,10 @@
 package com.smit.openfire.plugin;
 
+import gov.nist.javax.sip.header.TimeStamp;
+
 import java.io.StringReader;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
@@ -92,6 +95,9 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 		openimsElement22.addElement("title").addText(title);
 		openimsElement22.addElement("uri").addText(uri);
 		openimsElement22.addElement("message").addText(message);
+		
+		long timestamp = System.currentTimeMillis();
+		openimsElement22.addElement("time").addText(Long.toString(timestamp));
 		
 		SessionManager sessionManager = SessionManager.getInstance();
 		Collection<ClientSession> sessions = sessionManager.getSessions();

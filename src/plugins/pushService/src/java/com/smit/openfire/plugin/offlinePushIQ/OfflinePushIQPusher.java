@@ -26,7 +26,7 @@ public class OfflinePushIQPusher {
 		return mInstance;
 	}
 	
-	public void pushPushIQ(User user, long userLastOfflineDate)
+	public void pushPushIQ(String userAccount, long userLastOfflineDate)
 	{
 		ArrayList<OfflinePushIQ> array = OfflinePushStore.instance().queryAllPushIQ();
 		if(array == null || array.size() == 0)
@@ -47,7 +47,7 @@ public class OfflinePushIQPusher {
 			{
 				//Push PushIQ
 				IQ iq = offlinePushIQ.createCopy();
-				iq.setTo(user.getName() + "@smit/SMIT");
+				iq.setTo(userAccount);
 				SmitIQOnlineDeliverer.instance().deliverToOne(iq);
 			}
 			
