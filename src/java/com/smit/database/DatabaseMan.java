@@ -8,6 +8,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.smit.util.log4j.Log;
+
 public class DatabaseMan {
 	public static List<?> select(String queryString)
 	{
@@ -94,6 +96,7 @@ public class DatabaseMan {
 				ts.rollback();
 			}
 			//e.printStackTrace();
+			Log.info("hello");
 			System.err.println(e.getMessage());
 		}
 		finally
