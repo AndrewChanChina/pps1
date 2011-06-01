@@ -147,7 +147,10 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			userAccountList.add(userAccount);
+			if( userAccount != null && ! userAccount.equalsIgnoreCase(""))
+			{
+				userAccountList.add(userAccount);
+			}
 		}
 		
 		//Generate new IQ which will sent to user.
