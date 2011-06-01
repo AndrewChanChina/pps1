@@ -10,5 +10,6 @@
  <property name="IQText" column="IQText"/>
  <property name="IQSize" column="IQSize"/>
  <property name="creationDate" column="creationDate"/>
+ <property name="sendTo" column="sendTo"/>
 </class>
 </hibernate-mapping>

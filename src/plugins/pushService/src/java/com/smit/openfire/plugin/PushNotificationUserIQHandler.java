@@ -59,8 +59,8 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 		</iq>		
 	 */
 	@Override
-	public IQ handleIQ(IQ packet) throws UnauthorizedException {		
-		
+	public IQ handleIQ(IQ packet) throws UnauthorizedException 
+	{
 		PushIQ pushIQ = new PushIQ();
 		Element root = packet.getChildElement();
 		for (Iterator iter = root.elementIterator(); iter.hasNext(); ) {
@@ -124,25 +124,10 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 
 			if(pushIQ.getPushID() != null && pushIQ.getPushID() != "")
 			{
-				/*
-				java.util.List<String> users = pushIQ.getUsers();
-				for(int ti = 0; ti < users.size(); ti++)
-				{
-					String str = users.get(ti);
-					if(str.equals(sessionAddr))
-					{
-						IQSendToUser.setTo(sessionAddr);
-						xmppServer.getIQRouter().route(IQSendToUser);
-					}
-				}
-				*/
-				
 				if(pushIQ.getUsers().contains((Object)sessionAddr)){
 					IQSendToUser.setTo(sessionAddr);
 					xmppServer.getIQRouter().route(IQSendToUser);
 				}
-				
-
 			}
 			else
 			{
@@ -151,33 +136,20 @@ public class PushNotificationUserIQHandler  extends IQHandler{
 			}
 		}
 
+		/*
 		if(pushIQ.isDelayWhileIdle() == true)
 		{
 			OfflinePushStore instance = OfflinePushStore.instance();
-			OfflinePushIQ iqIsExsit = instance.queryPushIQ(pushIQ.getCollapseKey());
+			OfflinePushIQ iqIsExsit = instance.queryPushIQ(pushIQ.getCollapseKey(), "ALL");
 			if(iqIsExsit != null)
 			{
 				//We do not insert the offline push IQ.
 				instance.deletePushIQ(pushIQ.getCollapseKey());
 			}
-			instance.addOfflinePush(packet, pushIQ.getCollapseKey());
-		}
-		
-		/*
-		if(sendTo.equals("true"))
-		{
-			//Send to all online users.
-			SmitIQOnlineDeliverer.instance().broadcast(IQSendToUser);
-		}
-		else
-		{
-			//Send to several users.
-			
+			instance.addOfflinePush(packet, pushIQ.getCollapseKey(), "ALL" );
 		}
 		*/
-		
-		//SmitIQOnlineDeliverer.instance().deliverToOne(iq111);
-		
+
 		return null;
 	}
 }

@@ -92,7 +92,7 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 
 	}
 
-	public void addOfflinePush(IQ pushIQ, String collapseKey) {
+	public void addOfflinePush(IQ pushIQ, String collapseKey, String userAccount) {
 		/*
 		 * <iq id="ea0nN-5" type="get" from="test@smit/SMIT"> <openims
 		 * xmlns="smit:iq:notification"/> <pushID>1234567879</pushID>
@@ -125,6 +125,7 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 		offlinePushIQ.setCollapseKey(collapseKey);
 		offlinePushIQ.setIQText(pushIQ.toString());
 		offlinePushIQ.setIQSize(pushIQ.toString().length());
+		offlinePushIQ.setSendTo(userAccount);
 		
 		Date dateTime = new java.util.Date();
 				////String date = Long.toString(dateTime.getTime());
@@ -176,7 +177,7 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 		return array;
 	}
 
-	public OfflinePushIQ queryPushIQ(String aCollapseKey) {
+	public OfflinePushIQ queryPushIQ(String aCollapseKey, String userAccount) {
 		/*
 		 * 
 		Connection con = null;
@@ -217,7 +218,7 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 		}
 		*/
 		OfflinePushIQ offlinePushIQ = null;
-		String selectSql = "from SmitOfflinePushIQ where collapseKey = '" + aCollapseKey +"'";
+		String selectSql = "from SmitOfflinePushIQ where collapseKey = '" + aCollapseKey +"' AND sendTo='" + userAccount + "'";
 		List<SmitOfflinePushIQ> list = (List<SmitOfflinePushIQ>)DatabaseMan.select(selectSql);
 		if(list.size() == 1)
 		{

@@ -10,6 +10,8 @@ public class SmitOfflinePushIQ implements Serializable
 	private String IQText;
 	private Integer IQSize;
 	private Date creationDate;
+	private String sendTo;
+
 
 	public Integer getId() {
 		return id;
@@ -44,5 +46,12 @@ public class SmitOfflinePushIQ implements Serializable
 	}
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+	
+	public String getSendTo() {
+		return sendTo;
+	}
+	public void setSendTo(String sendTo) {
+		this.sendTo = sendTo;
 	}
 }

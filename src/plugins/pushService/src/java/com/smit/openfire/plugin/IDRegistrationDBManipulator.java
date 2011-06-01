@@ -163,6 +163,23 @@ public class IDRegistrationDBManipulator {
     	return list;
     }
     
+    public static String queryAccountByGeneratedPushID(final String pushID) throws SQLException
+    {
+    	String retAccount = "";
+    	String selectSQL = "from SmitRegisteredPushServiceId WHERE " + 
+							"pushServiceID = '" + pushID + "'";
+    	List<SmitRegisteredPushServiceId> list= (List<SmitRegisteredPushServiceId>)DatabaseMan.select(selectSQL);
+    	if(list == null || list.size() <= 0)
+    	{
+    		return retAccount;
+    	}
+    	for(int i=0; i<list.size(); i++)
+    	{
+    		retAccount = list.get(i).getUserAccount();
+    	}
+    	return retAccount;
+    }
+    
     public static String queryID(final String pushServiceType, final String userAccount) throws SQLException 
     {
     	String retID = "";

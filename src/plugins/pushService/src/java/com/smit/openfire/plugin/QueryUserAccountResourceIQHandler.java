@@ -6,9 +6,16 @@ import java.util.List;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.jivesoftware.openfire.IQHandlerInfo;
+import org.jivesoftware.openfire.PresenceManager;
+import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.auth.UnauthorizedException;
 import org.jivesoftware.openfire.handler.IQHandler;
+import org.jivesoftware.openfire.user.User;
+import org.jivesoftware.openfire.user.UserManager;
+import org.jivesoftware.openfire.user.UserNotFoundException;
 import org.xmpp.packet.IQ;
+import org.xmpp.packet.JID;
+import org.xmpp.packet.Presence;
 
 import com.smit.openfire.plugin.util.SmitStringUtil;
 import com.smit.vo.SmitUserAccountResource;
@@ -46,6 +53,9 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		String opCode = SmitStringUtil.TwoSubStringMid(packetStr, "<opCode>", "</opCode>");
 		String resource = SmitStringUtil.TwoSubStringMid(packetStr, "<resource>", "</resource>");
 		
+		
+		
+		
 		IQ reply = IQ.createResultIQ(packet);
 		reply.setTo(packet.getFrom());
 		Element childElementCopy = reply.getElement();
@@ -76,6 +86,25 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 					openimsElement.addElement("resource").addText(res.getResource());
 					openimsElement.addElement("deviceName").addText(res.getDeviceName());
 					openimsElement.addElement("deviceId").addText(res.getDeviceId());
+					//Check for presence of the userAccount@smitnn/resource
+					UserManager userManager = UserManager.getInstance();
+			        User user = null;
+					try {
+						String userAccAndRes = userAccount+"@smit/"+res.getResource();
+						user = userManager.getUser(userAccAndRes);
+					} catch (UserNotFoundException e) {
+						e.printStackTrace();
+					}
+					PresenceManager presenceMan = XMPPServer.getInstance().getPresenceManager();
+					Presence p = presenceMan.getPresence(user);
+					if(p != null)
+					{
+						openimsElement.addElement("presence").addText("true");
+					}
+					else
+					{
+						openimsElement.addElement("presence").addText("false");
+					}
 				}
 			}
 		}

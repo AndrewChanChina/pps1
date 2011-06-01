@@ -3,7 +3,8 @@ package com.smit.openfire.plugin.offlinePushIQ;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jivesoftware.smack.packet.IQ;
+import org.xmpp.packet.IQ;
+
 
 public class PushIQ extends IQ {
 	 
