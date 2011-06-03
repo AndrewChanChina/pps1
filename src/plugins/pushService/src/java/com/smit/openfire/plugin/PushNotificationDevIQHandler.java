@@ -57,22 +57,22 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 		/*
 		 * RECEIVED IQ PACKET EXAMPLE
 		 * 
-<iq id="72xU7-5" type="get" from="server@smitnn/Smack">
-  <server xmlns="smit:iq:dev:notification">
-    <sendTo>false</sendTo>
-    <pushID>20115301755553949</pushID>
-    <pushID>20115301755553949</pushID>
-    <pushID>20115301755553949</pushID>
-    <pushID>20115301755553949</pushID>
-    <pushServiceName>LDduHliC20I881Aik0v8nBkGK7wEtySl</pushServiceName>
-    <delayWhileIdle>true</delayWhileIdle>
-    <collapseKey>sss</collapseKey>
-    <title>theme</title>
-    <ticker>chuandan</ticker>
-    <uri>http://www.baidu.com</uri>
-    <message>sss</message>
-  </server>
-</iq>
+		<iq id="72xU7-5" type="get" from="server@smitnn/Smack">
+		  <server xmlns="smit:iq:dev:notification">
+		    <sendTo>false</sendTo>
+		    <pushID>20115301755553949</pushID>
+		    <pushID>20115301755553949</pushID>
+		    <pushID>20115301755553949</pushID>
+		    <pushID>20115301755553949</pushID>
+		    <pushServiceName>LDduHliC20I881Aik0v8nBkGK7wEtySl</pushServiceName>
+		    <delayWhileIdle>true</delayWhileIdle>
+		    <collapseKey>sss</collapseKey>
+		    <title>theme</title>
+		    <ticker>chuandan</ticker>
+		    <uri>http://www.baidu.com</uri>
+		    <message>sss</message>
+		  </server>
+		</iq>
 		*
 		*
 		*/
@@ -123,19 +123,7 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 		}
 
 		//parse the received IQ packet.
-		
-		/*
-		String packetStr = packet.toString();
-		String sendTo = SmitStringUtil.TwoSubStringMid(packetStr, "<sendTo>", "</sendTo>");
-		String pushServiceName = SmitStringUtil.TwoSubStringMid(packetStr, "<pushServiceName>", "</pushServiceName>");
-		String delayWhileIdle = SmitStringUtil.TwoSubStringMid(packetStr, "<delayWhileIdle>", "</delayWhileIdle>");
-		String collapseKey = SmitStringUtil.TwoSubStringMid(packetStr, "<collapseKey>", "</collapseKey>");
-		String title = SmitStringUtil.TwoSubStringMid(packetStr, "<title>", "</title>");
-		String ticker = SmitStringUtil.TwoSubStringMid(packetStr, "<ticker>", "</ticker>");
-		String uri = SmitStringUtil.TwoSubStringMid(packetStr, "<uri>", "</uri>");
-		String message = SmitStringUtil.TwoSubStringMid(packetStr, "<message>", "</message>");
-		*/
-		
+
 		List<String> userAccountList = new ArrayList<String>();
 		for(int i=0; i<pushIDList.size(); i++)
 		{
@@ -169,6 +157,7 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 		openimsElement.addElement("message").addText(message);
 		openimsElement.addElement("delayWhileIdle").addText(delayWhileIdle);
 		openimsElement.addElement("collapseKey").addText(collapseKey);
+
 		long timestamp = System.currentTimeMillis();
 		openimsElement.addElement("time").addText(Long.toString(timestamp));
 		
@@ -177,8 +166,9 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 		Iterator<ClientSession> it = sessions.iterator();
 		String pushId = null;
 		
-		IQ tempIQ = IQSendToUser.createCopy();
+		//IQ tempIQ = IQSendToUser.createCopy();
 		
+		// add pushIDs to 
 		for( ; it.hasNext(); )
 		{	
 			XMPPServer xmppServer = XMPPServer.getInstance();
@@ -200,19 +190,42 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 				}
 				if(pushId != null && pushId != "")
 				{
-					tempIQ.setTo(sessionAddr);
+					IQSendToUser.setTo(sessionAddr);
+					
+					//delete old "pushID" in IQSendToUser
+					List<Element> elements = openimsElement.elements();
+					for(int i=0; i<elements.size(); i++)
+					{
+						Element e= elements.get(i);
+						String name = e.getName();
+						if(name.equalsIgnoreCase("pushID"))
+						{
+							openimsElement.remove(e);
+						}
+					}
+					//add new "pushID" in IQSendToUser
 					openimsElement.addElement("pushID").addText(pushId);
-					xmppServer.getIQRouter().route(tempIQ);
+					xmppServer.getIQRouter().route(IQSendToUser);
 				}
 				else
 				{
 					//DO NOT ADD PUSHID.
 					continue;
 				}
-				
 				//remove from list;
 				userAccountList.remove(sessionAddr);
+			}
+		}
 
+		//delete old "pushID" in IQSendToUser
+		List<Element> elements = openimsElement.elements();
+		for(int i=0; i<elements.size(); i++)
+		{
+			Element e= elements.get(i);
+			String name = e.getName();
+			if(name.equalsIgnoreCase("pushID"))
+			{
+				openimsElement.remove(e);
 			}
 		}
 		
@@ -227,9 +240,9 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 					if(iqIsExsit != null)
 					{
 						//We delete the previous one first
-						instance.deletePushIQ(collapseKey);
+						instance.deletePushIQ(iqIsExsit.getId());
 					}
-					instance.addOfflinePush(tempIQ, collapseKey, "ALL" );
+					instance.addOfflinePush(IQSendToUser, collapseKey, "ALL" );
 				//}
 			}
 			else
@@ -241,26 +254,20 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 					if(iqIsExsit != null)
 					{
 						//We delete the previous one first
-						instance.deletePushIQ(collapseKey);
+						instance.deletePushIQ(iqIsExsit.getId());
 					}
-					instance.addOfflinePush(tempIQ, collapseKey, userAccount );
+					String aPushId = "";
+					try {
+						aPushId = IDRegistrationDBManipulator.queryID(pushServiceName, userAccount);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					instance.addOfflinePush(IQSendToUser, collapseKey, userAccount );
 				}
 			}
 		}
 
-		/*
-		if(delayWhileIdle.equals("true"))
-		{
-			OfflinePushStore instance = OfflinePushStore.instance();
-			OfflinePushIQ iqIsExsit = instance.queryPushIQ(pushId);
-			if(iqIsExsit != null)
-			{
-				//We delete the previous one first
-				instance.deletePushIQ(collapseKey);
-			}
-			instance.addOfflinePush(packet, collapseKey );
-		}
-		*/
 	
 		return null;
 	}

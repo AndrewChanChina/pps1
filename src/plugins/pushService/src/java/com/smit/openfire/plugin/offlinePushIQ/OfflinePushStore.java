@@ -148,10 +148,12 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 			pstmt = con.prepareStatement(SELECT_ALL_PUSH_IQ);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				Integer id = rs.getInt(1);
 				String collapseKey = rs.getString(2);
 				String queryIQText = rs.getString(3);
 				int queryIQSize = rs.getInt(4);
 				String queryCreationDate = rs.getString(5);
+				String sendTo = rs.getString(6);
 				//Date creationDate = new Date(Long.parseLong(queryCreationDate.trim()));
 				
 				DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
@@ -159,7 +161,7 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 				
 				Element element = xmlReader.read(new StringReader(queryIQText))
 						.getRootElement();
-				offlinePushIQ = new OfflinePushIQ(creationDate, element);
+				offlinePushIQ = new OfflinePushIQ(id, creationDate, element, sendTo, collapseKey);
 
 				// add to array...
 				array.add(offlinePushIQ);
@@ -226,21 +228,27 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 			try {
 				xmlReader = xmlReaders.take();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			SmitOfflinePushIQ tmp = list.get(0);
+			Integer id = tmp.getId();
 			String queryIQText = tmp.getIQText();
 			Date creationDate = tmp.getCreationDate();
 			Element element = null;
+			String sendTo = tmp.getSendTo();
+			String collapseKey = tmp.getCollapseKey();
 			try {
 				element = xmlReader.read(new StringReader(queryIQText)).getRootElement();
 			} catch (DocumentException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
-			offlinePushIQ = new OfflinePushIQ(creationDate, element);
+			offlinePushIQ = new OfflinePushIQ(id, creationDate, element, sendTo, collapseKey);
+			if(xmlReader != null)
+			{
+				xmlReaders.add(xmlReader);
+			}
 		}
 		else
 		{
@@ -250,7 +258,7 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 		return offlinePushIQ;
 	}
 
-	public void deletePushIQ(String aCollapseKey) {
+	public void deletePushIQ(Integer id/*, String aCollapseKey, String sendTo*/) {
 		
 		/*
 		Connection con = null;
@@ -267,8 +275,8 @@ public class OfflinePushStore extends BasicModule implements UserEventListener {
 			DbConnectionManager.closeConnection(pstmt, con);
 		}
 		*/
-		
-		String selectSql = "from SmitOfflinePushIQ where collapseKey = '" + aCollapseKey +"'";
+		String selectSql = "from SmitOfflinePushIQ where id = '" + id +"'";
+		//String selectSql = "from SmitOfflinePushIQ where collapseKey = '" + aCollapseKey +"' AND sendTo='" + sendTo + "'";
 		List<SmitOfflinePushIQ> list = (List<SmitOfflinePushIQ>)DatabaseMan.select(selectSql);
 		for(int i=0; i<list.size(); i++)
 		{

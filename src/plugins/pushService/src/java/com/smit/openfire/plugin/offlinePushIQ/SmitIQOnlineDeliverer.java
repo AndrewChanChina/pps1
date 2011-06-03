@@ -50,9 +50,9 @@ public class SmitIQOnlineDeliverer {
 		SessionManager sessionManager = SessionManager.getInstance();
 		Collection<ClientSession> sessions = sessionManager.getSessions();
 		Iterator<ClientSession> it = sessions.iterator();
+		String iqTo = iq.getTo().toString();
 		for( ; it.hasNext();)
 		{
-			String iqTo = iq.getTo().toString();
 			String sessionAddr = it.next().getAddress().toString();
 			if(iqTo.equalsIgnoreCase(sessionAddr))
 			{
