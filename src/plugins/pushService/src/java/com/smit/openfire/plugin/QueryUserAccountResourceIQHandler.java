@@ -18,6 +18,8 @@ import org.xmpp.packet.JID;
 import org.xmpp.packet.Presence;
 import org.xmpp.packet.Presence.Show;
 
+import com.smit.openfire.plugin.offlinePushIQ.OfflineDateGetter;
+import com.smit.openfire.plugin.offlinePushIQ.OfflinePushIQPusher;
 import com.smit.openfire.plugin.util.SmitStringUtil;
 import com.smit.vo.SmitUserAccountResource;
 
@@ -52,10 +54,8 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		String deviceName = SmitStringUtil.TwoSubStringMid(packetStr, "<deviceName>", "</deviceName>");
 		String deviceId = SmitStringUtil.TwoSubStringMid(packetStr, "<deviceId>", "</deviceId>");
 		String opCode = SmitStringUtil.TwoSubStringMid(packetStr, "<opCode>", "</opCode>");
+		//"resource" use only when opCode="save" and opCode="queryOfflinePush"
 		String resource = SmitStringUtil.TwoSubStringMid(packetStr, "<resource>", "</resource>");
-		
-		
-		
 		
 		IQ reply = IQ.createResultIQ(packet);
 		reply.setTo(packet.getFrom());
@@ -132,6 +132,35 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 			{
 				openimsElement.addElement("status").addText("fail");
 			}
+		}
+		else if(opCode.equalsIgnoreCase("queryOfflinePush"))
+		{
+			String userAccountAndResource = packet.getFrom().toString();
+	        UserManager userManager = UserManager.getInstance();
+	        User user = null;
+			try {
+				user = userManager.getUser(userAccountAndResource);
+			} catch (UserNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(user != null)
+			{
+				long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
+				OfflinePushIQPusher.instance().pushPushIQ(userAccountAndResource, lastOfflineDate);
+			}
+			/*
+			boolean isSuccess = false;
+			isSuccess = UserAccountResourceDBManipulator.insertResource(userAccount, resource, deviceName, deviceId);
+			if(isSuccess)
+			{
+				openimsElement.addElement("status").addText("success");
+			}
+			else
+			{
+				openimsElement.addElement("status").addText("fail");
+			}
+			*/
 		}
 		return reply;
 

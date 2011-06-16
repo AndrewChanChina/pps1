@@ -13,7 +13,9 @@ import org.jivesoftware.openfire.group.GroupManager;
 import org.jivesoftware.openfire.interceptor.InterceptorManager;
 import org.jivesoftware.openfire.interceptor.PacketInterceptor;
 import org.jivesoftware.openfire.interceptor.PacketRejectedException;
+import org.jivesoftware.openfire.session.ClientSession;
 import org.jivesoftware.openfire.session.Session;
+import org.jivesoftware.openfire.user.PresenceEventListener;
 import org.jivesoftware.openfire.user.User;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
@@ -27,6 +29,7 @@ import org.xmpp.packet.IQ;
 import org.xmpp.packet.JID;
 import org.xmpp.packet.Message;
 import org.xmpp.packet.Packet;
+import org.xmpp.packet.Presence;
 
 import com.smit.openfire.plugin.offlinePushIQ.OfflineDateGetter;
 import com.smit.openfire.plugin.offlinePushIQ.OfflinePushIQPusher;
@@ -42,7 +45,8 @@ public class PushServicePlugin implements Plugin,
 										  Component, 
 										  PropertyEventListener, 
 										  PacketInterceptor,
-										  SessionEventListener
+										  SessionEventListener,
+										  PresenceEventListener
 {
 	
 	private String serviceName = "pushService";
@@ -91,8 +95,7 @@ public class PushServicePlugin implements Plugin,
         	//Log.error(e);
         }
         PropertyEventDispatcher.addListener(this);
-        
-		
+
         // add IQ handler
         mServer.getIQRouter().addHandler(new RegisterPushIQHandler());
         mServer.getIQRouter().addHandler(new PushNotificationDevIQHandler());
@@ -131,14 +134,12 @@ public class PushServicePlugin implements Plugin,
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
         // Get the description from the plugin.xml file.
         return pluginManager.getDescription(this);
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
         // Get the name from the plugin.xml file.
         return pluginManager.getName(this);
 	}
@@ -146,53 +147,54 @@ public class PushServicePlugin implements Plugin,
 	@Override
 	public void initialize(JID jid, ComponentManager componentManager)
 			throws ComponentException {
-		// TODO Auto-generated method stub
 		System.out.println("PushServicePlugin: initialize...");
 	}
 
 	@Override
 	public void processPacket(Packet packet) {
-		// TODO Auto-generated method stub
 		System.out.println("PushServicePlugin: processPacket...");
-		
-		//String toNode = packet.getTo().getNode();
-		//boolean targetAll = "all".equals(toNode);
+		String packetXml = packet.toString();
+		System.out.println("PushServicePlugin: processPacket packet xml :" + packetXml);
+		if (packet instanceof Presence) {
+            Presence presence = (Presence) packet;
+            if (presence.isAvailable() || presence.getType() == Presence.Type.unavailable ||
+                    presence.getType() == Presence.Type.error) {
+                // Store answer of presence probes
+                //probedPresence.put(presence.getFrom().toString(), presence);
+            	System.out.println("PushServicePlugin: We got a presence packet...");
+            }
+        }
 	}
 
 	@Override
 	public void shutdown() {
-		// TODO Auto-generated method stub
 		System.out.println("PushServicePlugin: shutdown...");
 	}
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
 		System.out.println("PushServicePlugin: start...");
 	}
 
 	@Override
 	public void propertyDeleted(String property, Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("PushServicePlugin: propertyDeleted...");
 	}
 
 	@Override
 	public void propertySet(String property, Map<String, Object> params) {
-		// TODO Auto-generated method stub
+		System.out.println("PushServicePlugin: propertySet...");
 		
 	}
 
 	@Override
 	public void xmlPropertyDeleted(String property, Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("PushServicePlugin: xmlPropertyDeleted...");
 	}
 
 	@Override
 	public void xmlPropertySet(String property, Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("PushServicePlugin: xmlPropertySet...");
 	}
 	
 	////////////////////////////////////////////
@@ -200,67 +202,17 @@ public class PushServicePlugin implements Plugin,
     	System.out.println("PushServicePlugin: getServiceName...");
         return serviceName;
     }
-	
-    /*
-    public boolean sendIntent(String toWho,
-			String title,
-			String ticker,
-			String uri,
-			String message,
-			boolean bMessage,
-			String pushServiceId)
-    {
-    	String pushId = "PENDINGINTENT";
-    	if(bMessage){
-    		pushId = pushServiceId;
-    	}
-		IQ iq111 = new IQ();
-		//iq111.setFrom("admin@smit/SMIT"); //iq111.setTo("a@smit/spark");
-		iq111.setTo(toWho);
-		Element childElementCopy22 = iq111.getElement();
-		Namespace ns22 = new Namespace("", "smit:iq:notification");
-		Element openimsElement22 = childElementCopy22.addElement("openims", ns22.getURI());
-		openimsElement22.addElement("pushID").addText(pushId);
-		openimsElement22.addElement("title").addText(title);
-		openimsElement22.addElement("uri").addText(uri);
-		openimsElement22.addElement("message").addText(message);
-		openimsElement22.addElement("ticker").addText(ticker);
-		
-		OfflinePushStore.instance().addOfflinePush(iq111);
-    	SmitIQOnlineDeliverer.instance().deliverToOne(iq111);
-    	
-    	return true;
-    }
-
-    public boolean vibrateDevice(String toWho,String timeLong)
-    {
-		IQ iq111 = new IQ();
-		iq111.setTo(toWho);
-		Element childElementCopy22 = iq111.getElement();
-		Namespace ns22 = new Namespace("", "smit:iq:notification");
-		Element openimsElement22 = childElementCopy22.addElement("openims", ns22.getURI());
-		openimsElement22.addElement("pushID").addText("WARNING");
-		openimsElement22.addElement("title").addText("vibrate");
-		openimsElement22.addElement("uri").addText(timeLong);
-		openimsElement22.addElement("message").addText("where's my pad!");
-		openimsElement22.addElement("ticker").addText("update");
-		
-		SmitIQOnlineDeliverer.instance().deliverToOne(iq111);
-		
-    	return true;
-	}
-	*/
 
 	@Override
 	public void interceptPacket(Packet packet, Session session,
 			boolean incoming, boolean processed) throws PacketRejectedException {
-		// TODO Auto-generated method stub
+
 		System.out.println("Plugin Interceptor: " + packet.toString() + "\n");
 	}
 
 	@Override
 	public void anonymousSessionCreated(Session session) {
-		// TODO Auto-generated method stub
+
 		JID address = session.getAddress();
 		String userAccount = address.toString();
 		System.out.println("========= User Account: " + userAccount  + " anonymous SESSION CREATED ===============");
@@ -268,7 +220,6 @@ public class PushServicePlugin implements Plugin,
 
 	@Override
 	public void anonymousSessionDestroyed(Session session) {
-		// TODO Auto-generated method stub
 		
 		JID address = session.getAddress();
 		String userAccount = address.toString();
@@ -277,11 +228,56 @@ public class PushServicePlugin implements Plugin,
 
 	@Override
 	public void resourceBound(Session session) {
-		// TODO Auto-generated method stub
-		
 		JID address = session.getAddress();
 		String userAccount = address.toString();
 		System.out.println("========= User Account: " + userAccount  + "  RESOURCE BOUND ===============");
+		
+		//Plugin plugin = (PushServicePlugin) XMPPServer.getInstance().getPluginManager().getPlugin("pushService");
+		//plugin.
+		
+		/*
+		if(3 != session.getStatus()) //if != STATUS_AUTHENTICATED
+		{
+			return;
+		}
+        UserManager userManager = UserManager.getInstance();
+        User user = null;
+		try {
+			user = userManager.getUser(userAccount);
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(user != null)
+		{
+			long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
+			OfflinePushIQPusher.instance().pushPushIQ(userAccount, lastOfflineDate);
+		}
+		*/
+	}
+
+	@Override
+	public void sessionCreated(Session session) {
+		//We will query the offline push IQ from the database...
+		
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + "  SESSION CREATED ===============");
+	}
+
+	@Override
+	public void sessionDestroyed(Session session) {
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + "  RSESSION DESTROYED ===============");
+	}
+
+	@Override
+	public void availableSession(ClientSession session, Presence presence) {
+		/*
+		JID address = session.getAddress();
+		String userAccount = address.toString();
+		System.out.println("========= User Account: " + userAccount  + "  AVAILABLE SESSION  ===============");
 		
 		if(3 != session.getStatus()) //if != STATUS_AUTHENTICATED
 		{
@@ -300,25 +296,27 @@ public class PushServicePlugin implements Plugin,
 			long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
 			OfflinePushIQPusher.instance().pushPushIQ(userAccount, lastOfflineDate);
 		}
-		
+		*/
 	}
 
 	@Override
-	public void sessionCreated(Session session) {
-		// TODO Auto-generated method stub
-		//We will query the offline push IQ from the database...
-		
-		JID address = session.getAddress();
-		String userAccount = address.toString();
-		System.out.println("========= User Account: " + userAccount  + "  SESSION CREATED ===============");
+	public void unavailableSession(ClientSession session, Presence presence) {
+		System.out.println("=========  Unavailable Session ===============");
 	}
 
 	@Override
-	public void sessionDestroyed(Session session) {
-		// TODO Auto-generated method stub
-		JID address = session.getAddress();
-		String userAccount = address.toString();
-		System.out.println("========= User Account: " + userAccount  + "  RSESSION DESTROYED ===============");
+	public void presenceChanged(ClientSession session, Presence presence) {
+		System.out.println("=========  presence Changed ===============");
+	}
+
+	@Override
+	public void subscribedToPresence(JID subscriberJID, JID authorizerJID) {
+		System.out.println("=========  subscribed To Presence ===============");
+	}
+
+	@Override
+	public void unsubscribedToPresence(JID unsubscriberJID, JID recipientJID) {
+		System.out.println("=========  unsubscribed To Presence ===============");
 	}
 }
 
