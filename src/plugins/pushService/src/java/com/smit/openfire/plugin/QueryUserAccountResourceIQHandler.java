@@ -16,6 +16,7 @@ import org.jivesoftware.openfire.user.UserNotFoundException;
 import org.xmpp.packet.IQ;
 import org.xmpp.packet.JID;
 import org.xmpp.packet.Presence;
+import org.xmpp.packet.Presence.Show;
 
 import com.smit.openfire.plugin.util.SmitStringUtil;
 import com.smit.vo.SmitUserAccountResource;
@@ -97,9 +98,20 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 					}
 					PresenceManager presenceMan = XMPPServer.getInstance().getPresenceManager();
 					Presence p = presenceMan.getPresence(user);
+					// TODO it is ok? CHEN YING ZHONG 2011-6-16 13:32:00
 					if(p != null)
 					{
-						openimsElement.addElement("presence").addText("true");
+						Show s2 = p.getShow();
+						if(s2 != null)
+						{
+							int n = s2.compareTo(Presence.Show.away);
+							n = s2.compareTo(Presence.Show.chat);
+							n = s2.compareTo(Presence.Show.dnd);
+							n = s2.compareTo(Presence.Show.xa);							
+							openimsElement.addElement("presence").addText("true");
+						}else{							
+							openimsElement.addElement("presence").addText("false");
+						}
 					}
 					else
 					{
