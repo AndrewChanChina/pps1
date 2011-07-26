@@ -91,7 +91,7 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 					UserManager userManager = UserManager.getInstance();
 			        User user = null;
 					try {
-						String userAccAndRes = userAccount+"@smit/"+res.getResource();
+						String userAccAndRes = userAccount+"/"+res.getResource();
 						user = userManager.getUser(userAccAndRes);
 					} catch (UserNotFoundException e) {
 						e.printStackTrace();
