@@ -206,6 +206,16 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 					//add new "pushID" in IQSendToUser
 					openimsElement.addElement("pushID").addText(pushId);
 					xmppServer.getIQRouter().route(IQSendToUser);
+					
+					try {
+						UserAccountResourceDBManipulator.setLastPushTime(
+								clientSession.getAddress().getNode()+"@"+
+								clientSession.getAddress().getDomain(), 
+								clientSession.getAddress().getResource(), System.currentTimeMillis());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				else
 				{
