@@ -234,16 +234,12 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 			OfflinePushStore instance = OfflinePushStore.instance();
 			if(sendTo.equalsIgnoreCase("true")) //"true" indicates "send to all", "false" indicates "send to several users"
 			{
-				//for(int i=0; i<userAccountList.size(); i++)
-				//{
-					OfflinePushIQ iqIsExsit = instance.queryPushIQ(collapseKey, "ALL");
-					if(iqIsExsit != null)
-					{
-						//We delete the previous one first
-						//instance.deletePushIQ(iqIsExsit.getId());
-					}
-					instance.addOfflinePush(IQSendToUser, collapseKey, "ALL" );
-				//}
+				OfflinePushIQ iqIsExsit = instance.queryPushIQ(collapseKey, "ALL");
+				if (iqIsExsit != null) {
+					// We delete the previous one first
+					instance.deletePushIQ(iqIsExsit.getId());
+				}
+				instance.addOfflinePush(IQSendToUser, collapseKey, "ALL");
 			}
 			else
 			{
@@ -254,7 +250,7 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 					if(iqIsExsit != null)
 					{
 						//We delete the previous one first
-						//instance.deletePushIQ(iqIsExsit.getId());
+						instance.deletePushIQ(iqIsExsit.getId());
 					}
 					String aPushId = "";
 					try {
@@ -267,8 +263,6 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 				}
 			}
 		}
-
-	
 		return null;
 	}
 }

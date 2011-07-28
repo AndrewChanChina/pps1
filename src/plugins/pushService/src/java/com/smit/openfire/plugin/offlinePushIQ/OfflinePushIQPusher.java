@@ -99,36 +99,16 @@ public class OfflinePushIQPusher {
 
 				Element e = iq.getChildElement();
 				e.addElement("pushID").addText(pushId);
-				//e.addElement("pushID").addText("URL");
-				
 				if(sendTo.equalsIgnoreCase("all"))
 				{
-					
 					iq.setTo(userAccount);
 					mXMPPServer.getIQRouter().route(iq);
-					//SmitIQOnlineDeliverer.instance().deliverToOne(iq);
 				}
 				else if(sendTo.equalsIgnoreCase(userAccount))
 				{
-					//IQ iq = offlinePushIQ.createCopy();
 					iq.setTo(userAccount);
 					mXMPPServer.getIQRouter().route(iq);
-					//SmitIQOnlineDeliverer.instance().deliverToOne(iq);
-					//OfflinePushStore.instance().deletePushIQ(offlinePushIQ.getId());
-					//Collection<ClientSession> sess = SessionManager.getInstance().getSessions(userAccount);
-					//Iterator<ClientSession> it = sess.iterator();
-					/*
-					for( ; it.hasNext();)
-					{
-						String sessionAddr = it.next().
-						if(iqTo.equalsIgnoreCase(sessionAddr))
-						{
-							iq.setTo(iqTo);
-							mXMPPServer.getIQRouter().route(iq);
-							break;
-						}
-					}
-					*/
+					OfflinePushStore.instance().deletePushIQ(offlinePushIQ.getId());
 				}
 				else
 				{
