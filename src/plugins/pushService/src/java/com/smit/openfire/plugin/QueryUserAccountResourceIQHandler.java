@@ -1,6 +1,9 @@
 package com.smit.openfire.plugin;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.dom4j.Element;
@@ -10,6 +13,7 @@ import org.jivesoftware.openfire.PresenceManager;
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.auth.UnauthorizedException;
 import org.jivesoftware.openfire.handler.IQHandler;
+import org.jivesoftware.openfire.session.ClientSession;
 import org.jivesoftware.openfire.user.User;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
@@ -90,28 +94,30 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 					//Check for presence of the userAccount@smitnn/resource
 					UserManager userManager = UserManager.getInstance();
 			        User user = null;
+			        String userAccAndRes = "";
 					try {
-						String userAccAndRes = userAccount+"/"+res.getResource();
+						userAccAndRes = userAccount+"/"+res.getResource();
 						user = userManager.getUser(userAccAndRes);
 					} catch (UserNotFoundException e) {
 						e.printStackTrace();
 					}
 					PresenceManager presenceMan = XMPPServer.getInstance().getPresenceManager();
-					Presence p = presenceMan.getPresence(user);
-					// TODO it is ok? CHEN YING ZHONG 2011-6-16 13:32:00
-					if(p != null)
+					Collection<Presence> ps = presenceMan.getPresences(user.getName()); 
+					boolean isContains = false;
+					for(Presence p1 : ps)
 					{
-						Show s2 = p.getShow();
-						if(s2 != null)
+						String node = p1.getFrom().getNode();
+						String domain = p1.getFrom().getDomain();
+						String resc = p1.getFrom().getResource();
+						String acc = node + "@" + domain + "/" +resc;
+						if(acc.equalsIgnoreCase(userAccAndRes))
 						{
-							int n = s2.compareTo(Presence.Show.away);
-							n = s2.compareTo(Presence.Show.chat);
-							n = s2.compareTo(Presence.Show.dnd);
-							n = s2.compareTo(Presence.Show.xa);							
-							openimsElement.addElement("presence").addText("true");
-						}else{							
-							openimsElement.addElement("presence").addText("false");
+							isContains = true;
 						}
+					}
+					if(isContains)
+					{
+						openimsElement.addElement("presence").addText("true");
 					}
 					else
 					{
@@ -123,7 +129,7 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		else if(opCode.equalsIgnoreCase("save"))
 		{
 			boolean isSuccess = false;
-			isSuccess = UserAccountResourceDBManipulator.insertResource(userAccount, resource, deviceName, deviceId);
+			isSuccess = UserAccountResourceDBManipulator.insertResource(userAccount, resource, deviceName, deviceId, -1);
 			if(isSuccess)
 			{
 				openimsElement.addElement("status").addText("success");
@@ -136,6 +142,8 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 		else if(opCode.equalsIgnoreCase("queryOfflinePush"))
 		{
 			String userAccountAndResource = packet.getFrom().toString();
+			String acc = packet.getFrom().getNode() + "@" + packet.getFrom().getDomain();
+			String resc = packet.getFrom().getResource();
 	        UserManager userManager = UserManager.getInstance();
 	        User user = null;
 			try {
@@ -146,21 +154,24 @@ public class QueryUserAccountResourceIQHandler extends IQHandler{
 			}
 			if(user != null)
 			{
-				long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
-				OfflinePushIQPusher.instance().pushPushIQ(userAccountAndResource, lastOfflineDate);
+				
+				//long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
+				//OfflinePushIQPusher.instance().pushPushIQ(userAccountAndResource, lastOfflineDate);
+				long lastPushTime= -1;
+				try {
+					lastPushTime = UserAccountResourceDBManipulator.getLastPushTime(acc, resc);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				OfflinePushIQPusher.instance().pushPushIQ(userAccountAndResource, lastPushTime);
+				try {
+					UserAccountResourceDBManipulator.setLastPushTime(acc, resc, System.currentTimeMillis());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			/*
-			boolean isSuccess = false;
-			isSuccess = UserAccountResourceDBManipulator.insertResource(userAccount, resource, deviceName, deviceId);
-			if(isSuccess)
-			{
-				openimsElement.addElement("status").addText("success");
-			}
-			else
-			{
-				openimsElement.addElement("status").addText("fail");
-			}
-			*/
 		}
 		return reply;
 

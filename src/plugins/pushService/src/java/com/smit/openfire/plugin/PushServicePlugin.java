@@ -2,8 +2,10 @@ package com.smit.openfire.plugin;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.jivesoftware.openfire.PresenceManager;
 import org.jivesoftware.openfire.SessionManager;
 import org.jivesoftware.openfire.XMPPServer;
+import org.jivesoftware.openfire.auth.UnauthorizedException;
 import org.jivesoftware.openfire.container.Plugin;
 import org.jivesoftware.openfire.container.PluginManager;
 import org.jivesoftware.openfire.event.SessionEventDispatcher;
@@ -16,6 +18,7 @@ import org.jivesoftware.openfire.interceptor.PacketRejectedException;
 import org.jivesoftware.openfire.session.ClientSession;
 import org.jivesoftware.openfire.session.Session;
 import org.jivesoftware.openfire.user.PresenceEventListener;
+import org.jivesoftware.openfire.user.RemotePresenceEventListener;
 import org.jivesoftware.openfire.user.User;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
@@ -46,7 +49,9 @@ public class PushServicePlugin implements Plugin,
 										  PropertyEventListener, 
 										  PacketInterceptor,
 										  SessionEventListener,
-										  PresenceEventListener
+										  PresenceEventListener,
+										  PresenceManager,
+										  RemotePresenceEventListener
 {
 	
 	private String serviceName = "pushService";
@@ -206,7 +211,7 @@ public class PushServicePlugin implements Plugin,
 	@Override
 	public void interceptPacket(Packet packet, Session session,
 			boolean incoming, boolean processed) throws PacketRejectedException {
-
+		//if(packet)
 		System.out.println("Plugin Interceptor: " + packet.toString() + "\n");
 	}
 
@@ -231,29 +236,6 @@ public class PushServicePlugin implements Plugin,
 		JID address = session.getAddress();
 		String userAccount = address.toString();
 		System.out.println("========= User Account: " + userAccount  + "  RESOURCE BOUND ===============");
-		
-		//Plugin plugin = (PushServicePlugin) XMPPServer.getInstance().getPluginManager().getPlugin("pushService");
-		//plugin.
-		
-		/*
-		if(3 != session.getStatus()) //if != STATUS_AUTHENTICATED
-		{
-			return;
-		}
-        UserManager userManager = UserManager.getInstance();
-        User user = null;
-		try {
-			user = userManager.getUser(userAccount);
-		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(user != null)
-		{
-			long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
-			OfflinePushIQPusher.instance().pushPushIQ(userAccount, lastOfflineDate);
-		}
-		*/
 	}
 
 	@Override
@@ -269,39 +251,17 @@ public class PushServicePlugin implements Plugin,
 	public void sessionDestroyed(Session session) {
 		JID address = session.getAddress();
 		String userAccount = address.toString();
-		System.out.println("========= User Account: " + userAccount  + "  RSESSION DESTROYED ===============");
+		System.out.println("========= User Account: " + userAccount  + "  SESSION DESTROYED ===============");
 	}
 
 	@Override
 	public void availableSession(ClientSession session, Presence presence) {
-		/*
-		JID address = session.getAddress();
-		String userAccount = address.toString();
-		System.out.println("========= User Account: " + userAccount  + "  AVAILABLE SESSION  ===============");
-		
-		if(3 != session.getStatus()) //if != STATUS_AUTHENTICATED
-		{
-			return;
-		}
-        UserManager userManager = UserManager.getInstance();
-        User user = null;
-		try {
-			user = userManager.getUser(userAccount);
-		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(user != null)
-		{
-			long lastOfflineDate = OfflineDateGetter.getOfflineDate(user);
-			OfflinePushIQPusher.instance().pushPushIQ(userAccount, lastOfflineDate);
-		}
-		*/
 	}
 
 	@Override
 	public void unavailableSession(ClientSession session, Presence presence) {
 		System.out.println("=========  Unavailable Session ===============");
+		
 	}
 
 	@Override
@@ -317,6 +277,91 @@ public class PushServicePlugin implements Plugin,
 	@Override
 	public void unsubscribedToPresence(JID unsubscriberJID, JID recipientJID) {
 		System.out.println("=========  unsubscribed To Presence ===============");
+	}
+
+	@Override
+	public boolean isAvailable(User user) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  isAvailable ===============");
+		return false;
+	}
+
+	@Override
+	public Presence getPresence(User user) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  getPresence ===============");
+		return null;
+	}
+
+	@Override
+	public Collection<Presence> getPresences(String username) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  getPresences ===============");
+		return null;
+	}
+
+	@Override
+	public void probePresence(JID prober, JID probee) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  probePresence ===============");
+	}
+
+	@Override
+	public void handleProbe(Presence packet) throws UnauthorizedException {
+		// TODO Auto-generated method stub
+		System.out.println("=========  handleProbe ===============");
+	}
+
+	@Override
+	public boolean canProbePresence(JID prober, String probee)
+			throws UserNotFoundException {
+		// TODO Auto-generated method stub
+		System.out.println("=========  canProbePresence ===============");
+		return false;
+	}
+
+	@Override
+	public void sendUnavailableFromSessions(JID recipientJID, JID userJID) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  sendUnavailableFromSessions ===============");
+	}
+
+	@Override
+	public void userAvailable(Presence presence) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  userAvailable ===============");
+	}
+
+	@Override
+	public void userUnavailable(Presence presence) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  userUnavailable ===============");
+	}
+
+	@Override
+	public String getLastPresenceStatus(User user) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  getLastPresenceStatus ===============");
+		return null;
+	}
+
+	@Override
+	public long getLastActivity(User user) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  getLastActivity ===============");
+		return 0;
+	}
+
+	@Override
+	public void remoteUserAvailable(Presence presence) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  remoteUserAvailable ===============");
+	}
+
+	@Override
+	public void remoteUserUnavailable(Presence presence) {
+		// TODO Auto-generated method stub
+		System.out.println("=========  remoteUserUnavailable ===============");
 	}
 }
 

@@ -9,11 +9,18 @@ package com.smit.openfire.plugin.offlinePushIQ;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.jivesoftware.openfire.SessionManager;
 import org.jivesoftware.openfire.XMPPServer;
+import org.jivesoftware.openfire.session.ClientSession;
 import org.jivesoftware.openfire.user.User;
 import org.xmpp.packet.IQ;
+import org.xmpp.packet.IQ.Type;
 import org.dom4j.Element;
 
 import com.smit.openfire.plugin.IDRegistrationDBManipulator;
@@ -32,8 +39,27 @@ public class OfflinePushIQPusher {
 		return mInstance;
 	}
 	
-	public void pushPushIQ(String userAccount, long userLastOfflineDate)
+	/*
+	public class MyTask extends TimerTask{
+		private String mUserAccount = "";
+		private long mLastPushTime;
+	    public MyTask(final String userAccount, final long lastPushTime) {
+	    	mUserAccount = userAccount;
+	    	mLastPushTime = lastPushTime;
+	    }
+	   
+	    public void run() {
+	    	long lastPushTime = mLastPushTime;
+	    	String userAccount = mUserAccount;
+	    	
+	     }
+	}*/
+	
+	public void pushPushIQ(String userAccount, long lastPushTime)
 	{
+		//Timer timer = new Timer();
+		//MyTask task = new MyTask(userAccount, lastPushTime);
+		//timer.schedule(task, 800);
 		XMPPServer mXMPPServer = XMPPServer.getInstance();
 		ArrayList<OfflinePushIQ> array = OfflinePushStore.instance().queryAllPushIQ();
 		if(array == null || array.size() == 0)
@@ -48,7 +74,7 @@ public class OfflinePushIQPusher {
 			offlinePushIQ = array.get(i);
 			Date creationDate = offlinePushIQ.getCreationDate();
 			long time = creationDate.getTime();
-			if(userLastOfflineDate > time)
+			if(lastPushTime > time)
 			{
 				//Neglect the push IQ
 			}
@@ -60,7 +86,7 @@ public class OfflinePushIQPusher {
 				IQ iq = offlinePushIQ.createCopy();
 				IQ iqNew = new IQ();
 				iq.setID(iqNew.getID());
-				
+				iq.setType(Type.result);
 				String IQXmlStr = iq.toString();
 				String pushServiceName = SmitStringUtil.TwoSubStringMid(IQXmlStr, "<pushServiceName>", "</pushServiceName>");
 				String pushId = "";
@@ -88,7 +114,21 @@ public class OfflinePushIQPusher {
 					iq.setTo(userAccount);
 					mXMPPServer.getIQRouter().route(iq);
 					//SmitIQOnlineDeliverer.instance().deliverToOne(iq);
-					OfflinePushStore.instance().deletePushIQ(offlinePushIQ.getId());
+					//OfflinePushStore.instance().deletePushIQ(offlinePushIQ.getId());
+					//Collection<ClientSession> sess = SessionManager.getInstance().getSessions(userAccount);
+					//Iterator<ClientSession> it = sess.iterator();
+					/*
+					for( ; it.hasNext();)
+					{
+						String sessionAddr = it.next().
+						if(iqTo.equalsIgnoreCase(sessionAddr))
+						{
+							iq.setTo(iqTo);
+							mXMPPServer.getIQRouter().route(iq);
+							break;
+						}
+					}
+					*/
 				}
 				else
 				{

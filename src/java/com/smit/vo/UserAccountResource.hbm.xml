@@ -10,5 +10,6 @@
  <property name="resource" column="resource"/>
  <property name="deviceName" column="deviceName"/>
  <property name="deviceId" column="deviceId"/>
+ <property name="lastPushTime" column="lastPushTime"/>
 </class>
 </hibernate-mapping>

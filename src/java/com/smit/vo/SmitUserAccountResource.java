@@ -7,6 +7,7 @@ public class SmitUserAccountResource implements Serializable {
 	private String resource;
 	private String deviceName;
 	private String deviceId;
+	private long lastPushTime;
 
 	public Integer getId()
 	{
@@ -43,5 +44,11 @@ public class SmitUserAccountResource implements Serializable {
 	}
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
+	}
+	public long getLastPushTime() {
+		return lastPushTime;
+	}
+	public void setLastPushTime(long lastPushTime) {
+		this.lastPushTime = lastPushTime;
 	}
 }

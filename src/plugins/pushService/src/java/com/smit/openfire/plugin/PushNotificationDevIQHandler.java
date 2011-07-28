@@ -240,7 +240,7 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 					if(iqIsExsit != null)
 					{
 						//We delete the previous one first
-						instance.deletePushIQ(iqIsExsit.getId());
+						//instance.deletePushIQ(iqIsExsit.getId());
 					}
 					instance.addOfflinePush(IQSendToUser, collapseKey, "ALL" );
 				//}
@@ -254,7 +254,7 @@ public class PushNotificationDevIQHandler  extends IQHandler{
 					if(iqIsExsit != null)
 					{
 						//We delete the previous one first
-						instance.deletePushIQ(iqIsExsit.getId());
+						//instance.deletePushIQ(iqIsExsit.getId());
 					}
 					String aPushId = "";
 					try {

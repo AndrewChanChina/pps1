@@ -25,25 +25,42 @@ public class UserAccountResourceDBManipulator {
     public static boolean insertResource(final String userAccount,
     									final String resource ,
     									final String deviceName,
-    									final String deviceId)
+    									final String deviceId,
+    									final long lastPushTime
+    									)
     {    
     	SmitUserAccountResource itemToSave = new SmitUserAccountResource();
     	// 为保证同一个设备ID，只有资源
     	String selectSQL = "from SmitUserAccountResource WHERE " + 
-		"userAccount = '" + userAccount + "' AND " +
+		"userAccount = '" + userAccount + "' AND " + 
 		"deviceId = '" + deviceId + "'";
     	List<SmitUserAccountResource> list= (List<SmitUserAccountResource>)DatabaseMan.select(selectSQL);
     	if(list!=null){
+    		if(list.size() == 0)
+    		{
+    	    	itemToSave.setUserAccount(userAccount);
+    	    	itemToSave.setResource(resource);
+    	    	itemToSave.setDeviceName(deviceName);
+    	    	itemToSave.setDeviceId(deviceId);
+    	    	itemToSave.setLastPushTime(lastPushTime);
+    		}
     		if(list.size()==1)
+    		{
     			itemToSave = list.get(0);
+    			itemToSave.setUserAccount(userAccount);
+    	    	itemToSave.setResource(resource);
+    	    	itemToSave.setDeviceName(deviceName);
+    	    	itemToSave.setDeviceId(deviceId);
+    	    	if(lastPushTime != -1)
+    	    	{
+    	    		itemToSave.setLastPushTime(lastPushTime);
+    	    	}
+    	    	//Do Not add lastPushTime
+    		}
     		if(list.size()>1){
     			//TODO 异常啦
     		}    			
-    	}   
-    	itemToSave.setUserAccount(userAccount);
-    	itemToSave.setResource(resource);
-    	itemToSave.setDeviceName(deviceName);
-    	itemToSave.setDeviceId(deviceId);
+    	}
     	boolean ret = DatabaseMan.saveOrUpdate(itemToSave);
     	return ret;
     }
@@ -97,5 +114,37 @@ public class UserAccountResourceDBManipulator {
 		List<SmitUserAccountResource> list = (List<SmitUserAccountResource>) DatabaseMan
 				.select(selectSQL);
 		return list;
+	}
+	
+	public static SmitUserAccountResource queryResource(final String userAccount, 
+															final String resource) throws SQLException {
+		SmitUserAccountResource itemToSave = new SmitUserAccountResource();
+		String retResource = "";
+		String selectSQL = "from SmitUserAccountResource WHERE "
+				+ "userAccount = '" + userAccount + "' AND resource = '" + resource + "'";
+		List<SmitUserAccountResource> list = (List<SmitUserAccountResource>) DatabaseMan
+				.select(selectSQL);
+    	if(list!=null){
+    		if(list.size()==1)
+    			itemToSave = list.get(0);
+    		if(list.size()>1){
+    			//TODO 异常啦
+    		}    			
+    	}
+    	return itemToSave;
+	}
+	
+	public static boolean setLastPushTime(final String userAccount,final String resource, final long time) throws SQLException
+	{
+		SmitUserAccountResource itemToChange = queryResource(userAccount, resource);
+		itemToChange.setLastPushTime(time);
+		boolean ret = DatabaseMan.saveOrUpdate(itemToChange);
+		return ret;
+	}
+	
+	public static long getLastPushTime(final String userAccount,final String resource)  throws SQLException
+	{
+		SmitUserAccountResource item = queryResource(userAccount, resource);
+		return item.getLastPushTime();
 	}
 }
