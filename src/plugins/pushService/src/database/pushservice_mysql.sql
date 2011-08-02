@@ -25,5 +25,6 @@ CREATE TABLE `smitUserAccountResource` (
   `resource` varchar(50) DEFAULT NULL,
   `deviceName` varchar(50) DEFAULT NULL,
   `deviceId` varchar(50) DEFAULT NULL,
+  `lastPushTime` int(50),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
