@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="src/test/throttletest/build/lib/smackx.jar"/>
-	<classpathentry kind="lib" path="src/test/throttletest/build/lib/smack.jar"/>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="src" path="src/plugins/broadcast/src/java"/>
 	<classpathentry kind="src" path="src/plugins/clientControl/src/java"/>
@@ -24,6 +22,7 @@
 	<classpathentry kind="src" path="src/plugins/userImportExport/src/java"/>
 	<classpathentry kind="src" path="src/plugins/userservice/src/java"/>
 	<classpathentry kind="src" path="src/plugins/xmldebugger/src/java"/>
+	<classpathentry kind="src" path="src/plugins/testPlugin/src/java"/>
 	<classpathentry kind="src" path="src/plugins/pubsub/src/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/throttletest/src"/>
@@ -121,6 +120,8 @@
 	<classpathentry exported="true" kind="lib" path="src/plugins/userImportExport/lib/msv.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/plugins/userImportExport/lib/relaxngDatatype.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/plugins/userImportExport/lib/xsdlib.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/test/throttletest/build/lib/smack.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/test/throttletest/build/lib/smackx.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/web/WEB-INF/lib/commons-fileupload.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/web/WEB-INF/lib/commons-io.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/web/WEB-INF/lib/dwr.jar"/>

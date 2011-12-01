@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin>
+    <class>com.smit.pubsub.PubSubPlugin</class>
+    <name>PubsubService</name>
+    <description>use for pubsub request.</description>
+    <author>cluo@smit.com.cn</author>
+    <version>1.0.0</version>
+    <date>07/22/2011</date>
+    <minServerVersion>3.5.1</minServerVersion>
+    <url>http://www.smit.com.cn</url>
+  	<databaseKey>pubsubservice</databaseKey>
+	<databaseVersion>0</databaseVersion>
+</plugin>

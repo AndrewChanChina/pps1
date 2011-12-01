@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.smit.util.log4j.Log;
+import com.smit.vo.AtomRecord;
+import com.smit.vo.RssRecord;
 
 public class DatabaseMan {
 	public static List<?> select(String queryString)
@@ -55,7 +57,7 @@ public class DatabaseMan {
 			{
 				ts.rollback();
 			}
-			//e.printStackTrace();
+			e.printStackTrace();
 			System.err.println(e.getMessage());
 			CustomSessionFactory.closeSession();
 			return false;
@@ -105,4 +107,37 @@ public class DatabaseMan {
 		}
 	}
 
+	public static boolean deleteSub(String jid,String feed){
+		Transaction ts = null;
+		Session session = CustomSessionFactory.getSession();
+		try{
+			ts = session.beginTransaction();
+			String hql = "delete from Subscriber where jid='"+jid+"' and feed='"+feed+"'";
+			Query query = session.createQuery(hql);
+			query.executeUpdate();
+			ts.commit();
+			return true;
+		}catch(Exception e){
+			if(ts != null){
+				ts.rollback();
+			}
+			//e.printStackTrace();
+			System.err.println(e.getMessage());
+			CustomSessionFactory.closeSession();
+			return false;
+		}finally{
+			CustomSessionFactory.closeSession();
+		}
+	}
+	
+	public static void addListRss(List<RssRecord> rss){
+		for(RssRecord r:rss){
+			saveOrUpdate(r);
+		}
+	}
+	public static void addListAtom(List<AtomRecord> atom){
+		for(AtomRecord r:atom){
+			saveOrUpdate(r);
+		}
+	}
 }

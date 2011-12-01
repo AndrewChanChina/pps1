@@ -17,15 +17,15 @@
 			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}[%p]%m **** %l%n"></param>
 		</layout>
 	</appender>
-	<!--  
+	  
 	 <logger name="root">
-        <level value="DEBUG"/>
+        <level value="info"/>
         <appender-ref ref="Console"/>
         <appender-ref ref="File"/>
     </logger>
-    -->
+    
 	<root>
-		<priority value="debug"/>
+		<priority value="info"/>
 		<appender-ref ref="Console"/>
 		<appender-ref ref="File"/>
 	</root>

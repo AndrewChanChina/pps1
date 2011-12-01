@@ -256,7 +256,7 @@ public class RosterManager extends BasicModule implements GroupEventListener, Us
 
     public void groupDeleting(Group group, Map params) {
         // Get group members
-        Collection<JID> users = new HashSet<JID>(group.getMembers());
+    	Collection<JID> users = new HashSet<JID>(group.getMembers());
         users.addAll(group.getAdmins());
         // Get users whose roster will be updated
         Collection<JID> affectedUsers = getAffectedUsers(group);

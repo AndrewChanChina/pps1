@@ -1,167 +1,0 @@
-#
-# An unexpected error has been detected by Java Runtime Environment:
-#
-#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x6d85df57, pid=4448, tid=10152
-#
-# Java VM: Java HotSpot(TM) Client VM (11.0-b15 mixed mode windows-x86)
-# Problematic frame:
-# V  [jvm.dll+0x5df57]
-#
-# If you would like to submit a bug report, please visit:
-#   http://java.sun.com/webapps/bugreport/crash.jsp
-#
-
----------------  T H R E A D  ---------------
-
-Current thread (0x0aac6000):  VMThread [stack: 0x0ab80000,0x0abd0000] [id=10152]
-
-siginfo: ExceptionCode=0xc0000005, reading address 0x2e676e75
-
-Registers:
-EAX=0x0aa50098, EBX=0x0aa500d4, ECX=0x2e676e69, EDX=0x6d9dc108
-ESP=0x0abcf7c0, EBP=0x0aa50048, ESI=0x087e6f30, EDI=0x087e6f30
-EIP=0x6d85df57, EFLAGS=0x00010297
-
-Top of Stack: (sp=0x0abcf7c0)
-0x0abcf7c0:   087e6f30 087e6f30 6d97ecc0 6d81e6eb
-0x0abcf7d0:   087e6f30 0abcf818 0abcf818 00000002
-0x0abcf7e0:   0084d728 6d8af8b1 087fb0a8 0084fe60
-0x0abcf7f0:   6d8af681 0aa50098 6d87e9e3 0abcf818
-0x0abcf800:   00000000 0084d780 087fb0a8 6d8af497
-0x0abcf810:   0abcf818 00000000 6d9e48c8 087fb0a8
-0x0abcf820:   00000000 6d8aa123 087fb0a8 087fb0a8
-0x0abcf830:   00000000 0abcf948 00000000 6d93f6a3 
-
-Instructions: (pc=0x6d85df57)
-0x6d85df47:   cc cc cc cc cc cc cc cc cc 51 56 8b f1 8b 4e 04
-0x6d85df57:   8b 51 0c 83 c1 08 8b c2 c1 f8 02 85 d2 89 54 24 
-
-
-Stack: [0x0ab80000,0x0abd0000],  sp=0x0abcf7c0,  free space=317k
-Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
-V  [jvm.dll+0x5df57]
-
-VM_Operation (0x0c68f3c8): GenCollectForAllocation, mode: safepoint, requested by thread 0x0b4cac00
-
-
----------------  P R O C E S S  ---------------
-
-Java Threads: ( => current thread )
-  0x0b857000 JavaThread "À€ À€ä…¨Ú¦ã·¨Ú¦åµÚžä¥€Ú¦À€À€À€À€À€À€À€À€À€À€À€À€äª¸Ú¦åµÚžï¦Ú¥å…¨Ú±ä…¨Ú¦À€ Ä€À€À€À€À€À€À€À€À€À€À€À€ä³¸Ú¦ä°Ú¦ä¤Ú¦ã·¨Ú¦ã·¨Ú¦äŒ¨Ú¦ã« Ú¦À€À€À€À€À€À€À€À€À€À€ä¬˜Ú¦À€À€À€À€ã´ Ú¦À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€Ä€À€1À€À€ê€€Â„À€	À€À€À€À€À€À€À€À€À€À€À€å¾€à­¬À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€	À€å°¨ÚžäœÚ¦åŸ Úžä™¨Ú¦äž°Ú¦ä ¸Ú¦ä£€Ú¦À€À€ä…¨Ú¦Å˜À€À€À€À€À€äœÚ¦ä™¨Ú¦ä”€Ú¦ä‘¸Ú¦ä–Ú¦À€À€À€À€À€æ©¨ÚŸä¥€Ú¦ä³¸Ú¦À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€à¦€ÚžÀ€)(+*Ø‰À€À€À€É˜Úžä±›æ…ªæ…¶ç”¯æ¥´â½¬æ…â‘°æ¹…ç‰´ã­¹À€Ã°Úžá´¨æ¶Ÿà°‚è€ŒÀ€À€À€áÚžåµÚžá¾ Ú¥À€À€À€À€À€À€À€À€À€À€À€À€ä²˜Ú¦á¾ Ú¥ä¬¸Ú¦À€À€À€À€Ð‘À€À€è€€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€äŠ°Ú¦ä…¨Ú¦ä…¨Ú¦À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€å°¨Úžå›€ÚžåŸ Úžå˜Úžå¢˜ÚžÀ€À€À€æ©¨ÚŸä­˜Ú¦À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€Ã°Úžá´¨æ¶Ÿà°‚è€Œ$À€À€À€ä¸¸Ú¦åµÚžá¾ Ú¥ä³¸Ú¦À€À€À€À€À€À€À€À€À€À€ä¹Ú¦á¾ Ú¥ï±€Ú¥À€À€À€À€ÐÀ€À€è€€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€äª¸Ú¦ä¥€Ú¦ä¥€Ú¦À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€å°¨Úžå›€ÚžåŸ Úžå˜Úžå¢˜ÚžÀ€À€À€á‡ÚžÀ€ç­ ÚŸç¯ Úžä­˜Ú¦À€æ©¨ÚŸä³¸Ú¦À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€à»ˆÚžÂ“À€å„˜Ú¦åºˆÚ¦å³ˆÚ¦À€À€À€À€å¿¸Ú æ€°Ú ä¤˜Ú æƒ€Ú æ‰¨Ú æŠÚ æŠ¨Ú åŒˆÚžã©°Úžã°°Úžæ¡˜Úžâ©˜Úžá¯€Úžá¯Úžá®Úžá²°Úžå¿¸Ú å Úžî…˜Úžæ€°Ú æˆÚ ãŒ ÚžîŽˆÚžå†¸Ú¦ä¤˜Ú æƒ€Ú æƒ¨Ú æ„˜Ú ã‘€Úžî“ˆÚžãƒ¨Úží¡¸Ú æ„¸Ú æ…°Ú å‡ Ú¦æ†¸Ú áˆÚžâƒ ÚžáŽ¨Úžå¸ÚžáˆÚžá£˜Úžæ‡¸Ú ï‚°ÚžåˆˆÚ¦æˆ¨Ú âˆÚžá¤ˆÚžæ‰Ú æ‰¨Ú æŠÚ åˆ¸Ú¦âª€ÚžæŠ¨Ú â Úžä®Ú å‹°ÚžáˆÚžâƒ ÚžáŽ¨Úžå¸ÚžáˆÚžç’¨Ú æ‡¸Ú å³ˆÚ¦åˆˆÚ¦æˆ¨Ú âˆÚžá¤ˆÚžâ Úžä®Ú å‰˜Ú¦åŠ¨Ú¦åŒ€Ú¦å°Ú¦ä Úžä¸Úžã³¸Úžä˜Úžæ‹ Ú æˆÚ  ÚŸæ¸Ú æŽ¨Ú Ò°ÚŸêˆ°ÚŸê˜ÚŸå°Úžå¨Ú¦æ Ú ê–€ÚŸå¸Ú¦æ”¨Ú 		LMN9
-5
-$O#P1PQRS!TUVWX4YZ[\]:c [_thread_blocked, id=8452, stack(0x0c5f0000,0x0c640000)]
-  0x0baad400 JavaThread "Unknown thread" daemon [_thread_blocked, id=7060, stack(0x0d2c0000,0x0d310000)]
-  0x0ba5d400 JavaThread "Unknown thread" daemon [_thread_blocked, id=8736, stack(0x0c000000,0x0c050000)]
-  0x0b4cac00 JavaThread "Unknown thread" [_thread_blocked, id=9844, stack(0x0c640000,0x0c690000)]
-  0x0baabc00 JavaThread "Unknown thread" daemon [_thread_blocked, id=10208, stack(0x0cc30000,0x0cc80000)]
-  0x0b96ec00 JavaThread "" [_thread_blocked, id=5872, stack(0x0d270000,0x0d2c0000)]
-  0x0b6ad400 JavaThread "À€ À€À€À€á€ÚžåµÚžà«€à¡—À€À€À€À€À€À€À€À€À€À€À€À€à°à¡—åµÚžïžˆà¡‘À€À€ì˜à¡–À€  À€À€À€À€À€À€À€À€À€À€À€À€À€à§ˆà¡—àª°à¡—á€Úžá€Úžà¦à¡—à¢ à¡—ïŽˆË­ê€ÍÀ€À€æ”˜ÜÀ€À€à±°à¡—À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€Ä€À€0À€À€è€à®•À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€å°¨Úžå›€ÚžåŸ Úžå˜Úžå¢˜ÚžÀ€À€À€À€À€À€À€À€ì­›à¡•æ©¨ÚŸà«€à¡—À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€ì®»à¡•à¦€ÚžÀ€!À€À€ì¯“à¡•á€ˆÚžÀ€à¢ à¡—Â·å”°ÚžÀ€À€è‚€ë–´à«€à¡—À€À€ç€€Â·ê¼€Ú À€À€è‚€ë–´à«€à¡—À€ç€€ë–´à«€à¡—À€À€ì°³à¡•à»ˆÚžÀ€àµ à¡—À€À€áˆà¡—À€À€À€À€æ¾€à œáŽ¨Úžà¶ˆà¡—ã®°Úžá®¨ÚžÀ€à¶˜à¡—À€À€æ¶à  ã½˜à £á¯Úžç€ˆà  ã½€à £æ®˜à  æ´ˆà  ë‘¨à ¥á­¸Úžà¶°à¡—æ¾€à œáŽ¨Úžç€ˆà  À€À€ì²«à¡•à °ÚžÀ€æ€Å¤ÄÄƒÄƒÄÅ¤ÄÄÄÄÀ€À€À€ì³“à¡•É˜Úžä•–ä½”À€ì³£à¡•É˜Úžä½Žå™Ÿå‘…OÀ€À€À€ì³»à¡•É˜Úžæ¥Œæ•¦ç¥£æ±£â¹¥æ…ªæ…¶ì´“à¡•à¦€ÚžÀ€ÅÀ€À€Å‘À€À€ì´»à¡•á‡ÚžÀ€à½˜à¡—à¿˜à¡—à¹ˆà¡—à»à¡—À€À€ìµ›à¡•à·˜ÚžÀ€À€À€è€€à¹ˆà¡—À€À€áŒ°ÚžÀ€Ë¿À€	
-À€À€À€À€À€ì¶“à¡•àµ Úžà¸à¡—à³¨à¡—À€À€À€À€ÐÀ€ï¿¼ï¿¿À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€ì·£à¡•à·˜ÚžÀ€À€À€è€€à»à¡—À€À€áŒ°ÚžÀ€Ë¿À€
-À€À€À€À€À€ì¸›à¡•àµ Úžàº˜à¡—à³¨à¡—À€À€À€À€ÐÀ€ï¿¼ï¿¿À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€ì¹«à¡•à·˜ÚžÀ€À€À€è€€à½˜à¡—À€À€áŒ°ÚžÀ€Ë¿À€
-À€À€À€À€À€À€ìº£à¡•àµ Úžà¼ à¡—à³¨à¡—À€À€À€À€ÐÀ€ï¿¼ï¿¿À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€ì»³à¡•à·˜ÚžÀ€À€À€è€€à¿˜à¡—À€À€áŒ°ÚžÀ€Ã¿À€À€À€À€ì¼£à¡•àµ Úžà¾¨à¡—à³¨à¡—À€À€À€À€ÐÀ€ï¿¼ï¿¿À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€ì½³à¡•à«ÚžÀ€À€À€À€À€À€À€À€ì¾“à¡•Å¨Úžè¯€æ¶ž	À€À€À€À€á€ÚžåµÚžÀ€À€À€À€À€À€À€À€À€À€À€À€À€À€á† à¡—åµÚžæ¾€à œÀ€À€à«€à¡—ØÀ€ØÀ€À€À€À€À€À€À€À€À€À€À€À€À€À€à·°à¡—á€¨à¡—á€Úžá€Úžà·ˆà¡—à³¨à¡—ïŽˆË­ë·€Ì²À€À€à¶°à¡—À€À€áŒ ÚžÀ€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€1À€À€À€À€	À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€íƒ«à¡•æ©¨ÚŸáˆà¡—À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€í…‹à¡•à daemon [_thread_blocked, id=7424, stack(0x0d220000,0x0d270000)]
-  0x0b98c400 JavaThread "à°‚è€Œ$À€À€À€â§ˆÚ¥åµÚžá¾ Ú¥â¢ˆÚ¥À€À€À€À€À€À€À€À€À€À€â§°Ú¥á¾ Ú¥äˆ ÚžÀ€À€À€À€Ð‘À€À€è€€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€çª˜ÚŸæ©¨ÚŸæ©¨ÚŸÀ€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€å°¨Úžå›€ÚžåŸ Úžå˜Úžå¢˜ÚžÀ€À€À€á‡ÚžÀ€ç­ ÚŸç¯ Úžâ›¨Ú¥â” Ú¥âˆÚ¥â†€Ú¥À€À€À€æ©¨ÚŸâ¢ˆÚ¥À€À€À€À€À€À€À€À€ì¶˜Ü•À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€éƒ¨Ú À€À€áŒ Ë®À€À€À€À€À€éƒ¨Ú À€À€áŒ¸Ë®À€À€À€À€À€éƒ¨Ú À€À€áË®À€À€À€À€À€éƒ¨Ú À€À€á¨Ë®À€À€À€À€À€à»ˆÚžÀ€â¬€Ú¥ì¹¨Ú¶â±°Ú¥À€À€À€À€ã©°Úžã°°Úžâ©˜Úžá¯€Úžâƒ Úžâ‡ˆÚžâƒ Úžä„¨Ú 	
-À€à °ÚžÀ€Ä€ÄÄæà°‡à¨Œ
-À€À€À€À€à¦€ÚžÀ€À€À€À€À€á‡ÚžÀ€â®€Ú¥â°ˆÚ¥À€À€À€à·˜ÚžÅœÀ€À€À€â®€Ú¥À€À€áŒ°ÚžÀ€Ã¿À€À€À€À€ëœªÀ€Â±À€À€àµ Úžâ­ˆÚ¥âª°Ú¥À€À€À€À€À€ï¿¾ï¿¿À€À€À€	À€À€ì¼€Â–â» àª¬ì¨†Â˜À€À€ì¼€Â–À€À€À€à·˜Úžá”¼À€À€À€â°ˆÚ¥À€À€áŒ°ÚžÀ€Ã¿À€À€À€â¬ªÆ·ë„€À€À€àµ Úžâ¯Ú¥âª°Ú¥À€À€À€À€À€ï¿¾ï¿¿À€À€À€	À€À€ì¼€Â–ä§ àª¬ì¤‰Â˜À€À€ì¼€Â–À€À€À€à«ÚžÀ€À€À€À€À€À€À€Å¨Úžè¯€æ¶žÀ€,À€À€À€á·˜Ú åµÚžâº€Ú ã°ˆÚ ä„¨Ú â±°Ú¥À€À€À€À€À€À€â¸€Ú¥ä„¨Ú âƒ ÚžÀ€À€é¡ˆÚ À€!À€À€À€À€À€À€À€À€À€À€À€À€À€À€â¬°Ú¥â±˜Ú¥á€Úžá·˜Ú â¬ Ú¥âª°Ú¥À€À€À€À€À€À€À€À€À€À€áŒ ÚžÀ€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€Ä€À€1À€À€ê€€Â„À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€å°¨Úžå›€ÚžåŸ Úžå˜Úžâ Ú â ¨Ú â—ˆÚ â’°Ú â§°Ú âŠ°Ú â¨Ú â†ˆÚ âˆ˜Ú â¥°Ú âœÚ âªÚ â­Ú â°¨Ú â²¨Ú â´°Ú â·Ú À€À€À€À€À€À€À€À€À€æ©¨ÚŸâ±°Ú¥À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€À€â±°Ú¥À€À€À€À€À€À€À€À€À€à»ˆÚžÀ€â»ˆÚ¥ì»¸Ú¶ã€¸Ú¥À€À€À€À€ã©°Úžã°°Úžâ©˜Úžá¯€Úžá¶¸Úžâ‡ˆÚžá¶¸Úžâ‡ˆÚž	
-À€à °ÚžÀ€Ä€ÄÄæà±¤à¨Œ
-À€À€À€À€à¦€ÚžÀ€À€À€À€À€á‡ÚžÀ€â½ˆÚ¥â¿Ú¥À€À€À€à·˜ÚžÅœÀ€À€À€â½ˆÚ¥À€À€áŒ°ÚžÀ€Ã¿À€À€À€À€ëœªÀ€Â±À€À€àµ Úžâ¼Ú¥â¹¸Ú¥À€À€À€À€À€ï¿¾ï¿¿À€À€À€À€À€ì¼€Â–â» àª¬ì¨†Â˜À€À€ì¼€Â–À€À€À€à·˜Úžá”¼À€À€À€â¿Ú¥À€À€áŒ°ÚžÀ€Ã¿À€À€À€â¬ªÆ·ë„€À€À€àµ Úžâ¾˜Ú¥â¹¸Ú¥À€À€À€À€À€ï¿¾ï¿¿À€À€À€À€À€ì¼€Â–ä§ àª¬ì¤‰Â˜À€À€ì¼€Â [_thread_blocked, id=7544, stack(0x0d1d0000,0x0d220000)]
-  0x0b98b000 
-[error occurred during error reporting (printing all threads), id 0xc0000005]
-
-VM state:at safepoint (normal execution)
-
-VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
-[0x00849118] UNKNOWN - owner thread: 0x0aac6000
-[0x00849578] UNKNOWN - owner thread: 0x0b4cac00
-
-Heap
- def new generation   total 1024K, used 55K [0x029e0000, 0x02af0000, 0x02ec0000)
-  eden space 960K,   0% used [0x029e0000, 0x029e0000, 0x02ad0000)
-  from space 64K,  87% used [0x02ad0000, 0x02addfd8, 0x02ae0000)
-  to   space 64K,   0% used [0x02ae0000, 0x02ae0000, 0x02af0000)
- tenured generation   total 11308K, used 11182K [0x02ec0000, 0x039cb000, 0x069e0000)
-   the space 11308K,  98% used [0x02ec0000, 0x039aba78, 0x03644600, 0x039cb000)
- compacting perm gen  total 30976K, used 30845K [0x069e0000, 0x08820000, 0x0a9e0000)
-   the space 30976K,  99% used [0x069e0000, 0x087ff6a8, 0x087e7400, 0x08820000)
-No shared spaces configured.
-
-Dynamic libraries:
-0x00400000 - 0x00424000 	D:\Program Files\Java\jre6\bin\javaw.exe
-0x7c920000 - 0x7c9b4000 	C:\WINDOWS\system32\ntdll.dll
-0x7c800000 - 0x7c91d000 	C:\WINDOWS\system32\kernel32.dll
-0x77da0000 - 0x77e49000 	C:\WINDOWS\system32\ADVAPI32.dll
-0x77e50000 - 0x77ee2000 	C:\WINDOWS\system32\RPCRT4.dll
-0x77fc0000 - 0x77fd1000 	C:\WINDOWS\system32\Secur32.dll
-0x77d10000 - 0x77d9f000 	C:\WINDOWS\system32\USER32.dll
-0x77ef0000 - 0x77f37000 	C:\WINDOWS\system32\GDI32.dll
-0x76300000 - 0x7631d000 	C:\WINDOWS\system32\IMM32.DLL
-0x62c20000 - 0x62c29000 	C:\WINDOWS\system32\LPK.DLL
-0x73fa0000 - 0x7400b000 	C:\WINDOWS\system32\USP10.dll
-0x77be0000 - 0x77c38000 	C:\WINDOWS\system32\msvcrt.dll
-0x7c340000 - 0x7c396000 	D:\Program Files\Java\jre6\bin\msvcr71.dll
-0x6d800000 - 0x6da56000 	D:\Program Files\Java\jre6\bin\client\jvm.dll
-0x76b10000 - 0x76b3a000 	C:\WINDOWS\system32\WINMM.dll
-0x6d280000 - 0x6d288000 	D:\Program Files\Java\jre6\bin\hpi.dll
-0x76bc0000 - 0x76bcb000 	C:\WINDOWS\system32\PSAPI.DLL
-0x6d370000 - 0x6d399000 	D:\Program Files\Java\jre6\bin\jdwp.dll
-0x6d6a0000 - 0x6d6a6000 	D:\Program Files\Java\jre6\bin\npt.dll
-0x6d7b0000 - 0x6d7bc000 	D:\Program Files\Java\jre6\bin\verify.dll
-0x6d320000 - 0x6d33f000 	D:\Program Files\Java\jre6\bin\java.dll
-0x6d7f0000 - 0x6d7ff000 	D:\Program Files\Java\jre6\bin\zip.dll
-0x6d1f0000 - 0x6d1f7000 	D:\Program Files\Java\jre6\bin\dt_socket.dll
-0x71a20000 - 0x71a37000 	C:\WINDOWS\system32\WS2_32.dll
-0x71a10000 - 0x71a18000 	C:\WINDOWS\system32\WS2HELP.dll
-0x719c0000 - 0x719fe000 	C:\WINDOWS\System32\mswsock.dll
-0x76ef0000 - 0x76f17000 	C:\WINDOWS\system32\DNSAPI.dll
-0x76f80000 - 0x76f88000 	C:\WINDOWS\System32\winrnr.dll
-0x76f30000 - 0x76f5c000 	C:\WINDOWS\system32\WLDAP32.dll
-0x16080000 - 0x160a5000 	C:\Program Files\Bonjour\mdnsNSP.dll
-0x76d30000 - 0x76d48000 	C:\WINDOWS\system32\Iphlpapi.dll
-0x76f90000 - 0x76f96000 	C:\WINDOWS\system32\rasadhlp.dll
-0x60fd0000 - 0x61025000 	C:\WINDOWS\system32\hnetcfg.dll
-0x71a00000 - 0x71a08000 	C:\WINDOWS\System32\wshtcpip.dll
-0x6d610000 - 0x6d623000 	D:\Program Files\Java\jre6\bin\net.dll
-0x0ffd0000 - 0x0fff8000 	C:\WINDOWS\system32\rsaenh.dll
-0x759d0000 - 0x75a7e000 	C:\WINDOWS\system32\USERENV.dll
-0x5fdd0000 - 0x5fe24000 	C:\WINDOWS\system32\netapi32.dll
-0x6d790000 - 0x6d798000 	D:\Program Files\Java\jre6\bin\sunmscapi.dll
-0x765e0000 - 0x76672000 	C:\WINDOWS\system32\CRYPT32.dll
-0x76db0000 - 0x76dc2000 	C:\WINDOWS\system32\MSASN1.dll
-0x6d630000 - 0x6d639000 	D:\Program Files\Java\jre6\bin\nio.dll
-0x76d10000 - 0x76d28000 	C:\WINDOWS\system32\MPRAPI.dll
-0x77c90000 - 0x77cc2000 	C:\WINDOWS\system32\ACTIVEDS.dll
-0x76de0000 - 0x76e05000 	C:\WINDOWS\system32\adsldpc.dll
-0x76af0000 - 0x76b01000 	C:\WINDOWS\system32\ATL.DLL
-0x76990000 - 0x76acc000 	C:\WINDOWS\system32\ole32.dll
-0x770f0000 - 0x7717b000 	C:\WINDOWS\system32\OLEAUT32.dll
-0x76e50000 - 0x76e5e000 	C:\WINDOWS\system32\rtutils.dll
-0x71b70000 - 0x71b83000 	C:\WINDOWS\system32\SAMLIB.dll
-0x76060000 - 0x761b6000 	C:\WINDOWS\system32\SETUPAPI.dll
-
-VM Arguments:
-jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:1465 -DopenfireHome=D:\workspacethree\Openfire/target/openfire -Dfile.encoding=GBK 
-java_command: org.jivesoftware.openfire.starter.ServerStarter
-Launcher Type: SUN_STANDARD
-
-Environment Variables:
-JAVA_HOME=D:\Program Files\Java\jdk1.6.0_10
-CLASSPATH=.;D:\Program Files\Java\jdk1.6.0_10\lib;D:\Program Files\Java\jdk1.6.0_10\lib\tools.jar
-PATH=D:/Program Files/Java/jre6/bin/client;D:/Program Files/Java/jre6/bin;D:/Program Files/Java/jre6/lib/i386;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\MySQL\MySQL Server 5.5\bin;D:\Program Files\Git\bin;C:\Program Files\Microsoft SQL Server\90\Tools\binn\;D:\Program Files\Eclipse\eclipse-for-android-win32\sdk\platform-tools;D:\Program Files\Java\jdk1.6.0_10\bin;D:\Program Files\Java\jdk1.6.0_10\jre\bin
-USERNAME=USER
-OS=Windows_NT
-PROCESSOR_IDENTIFIER=x86 Family 6 Model 23 Stepping 10, GenuineIntel
-
-
-
----------------  S Y S T E M  ---------------
-
-OS: Windows XP Build 2600 Service Pack 2
-
-CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 7 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3
-
-Memory: 4k page, physical 2085996k(212576k free), swap 3489460k(986300k free)
-
-vm_info: Java HotSpot(TM) Client VM (11.0-b15) for windows-x86 JRE (1.6.0_10-rc2-b32), built on Sep 12 2008 00:52:11 by "java_re" with MS VC++ 7.1
-
-time: Fri Jun 03 14:33:28 2011
-elapsed time: 1269 seconds
-

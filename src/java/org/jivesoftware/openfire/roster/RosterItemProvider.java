@@ -346,6 +346,7 @@ public class RosterItemProvider {
     private void insertGroups(long rosterID, Iterator<String> iter, Connection con) throws SQLException
     {
         PreparedStatement pstmt = null;
+        System.out.println("add group!");
         try {
             pstmt = con.prepareStatement(CREATE_ROSTER_ITEM_GROUPS);
             pstmt.setLong(1, rosterID);
@@ -357,6 +358,7 @@ public class RosterItemProvider {
                     pstmt.executeUpdate();
                 }
                 catch (SQLException e) {
+                	e.printStackTrace();
                     Log.error(e.getMessage(), e);
                 }
             }
